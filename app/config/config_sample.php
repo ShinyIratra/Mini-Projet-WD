@@ -70,6 +70,13 @@ $app->set('csp_nonce', $nonce);
 // $config = include PROJECT_ROOT .'/app/config/config.php';
 return [
 	/**************************************
+	 *        Application Settings        *
+	 **************************************/
+	'app' => [
+		'debug' => false,
+	],
+
+	/**************************************
 	 *         Database Settings          *
 	 **************************************/
 	'database' => [

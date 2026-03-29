@@ -1,6 +1,6 @@
 <?php
 
-namespace app\logic;
+namespace app\services;
 
 use app\repositories\PersonRepository;
 use RuntimeException;

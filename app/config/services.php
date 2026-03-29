@@ -61,10 +61,27 @@ use Tracy\Debugger;
  *
  * For more options, see https://tracy.nette.org/en/configuration
  **********************************************/
-Debugger::enable(); // Auto-detects environment
+$logDirectory = __DIR__ . $ds . '..' . $ds . 'log';
+if (is_dir($logDirectory) === false) {
+	mkdir($logDirectory, 0775, true);
+}
+
+if (is_writable($logDirectory) === false) {
+	$logDirectory = sys_get_temp_dir() . $ds . 'flight-tracy-log';
+	if (is_dir($logDirectory) === false) {
+		mkdir($logDirectory, 0775, true);
+	}
+}
+
+Debugger::$logDirectory = $logDirectory;
+
+$debugMode = (($config['app']['debug'] ?? false) === true)
+	? Debugger::Development
+	: Debugger::Production;
+
+Debugger::enable($debugMode);
 // Debugger::enable(Debugger::Development); // Explicitly set environment
 // Debugger::enable('23.75.345.200'); // Restrict debug bar to specific IPs
-Debugger::$logDirectory = __DIR__ . $ds . '..' . $ds . 'log'; // Log directory
 Debugger::$strictMode = true; // Show all errors (set to E_ALL & ~E_DEPRECATED for less noise)
 // Debugger::$maxLen = 1000; // Max length of dumped variables (default: 150)
 // Debugger::$maxDepth = 5; // Max depth of dumped structures (default: 3)
