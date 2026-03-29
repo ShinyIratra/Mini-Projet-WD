@@ -1,21 +1,13 @@
 services:
     flight:
-        image: php:8-apache
+        build:
+            context: .
+            dockerfile: Dockerfile
         working_dir: /var/www/html
-        command: >
-            bash -c "apt-get update &&
-            apt-get install -y libpq-dev &&
-            docker-php-ext-install pdo pdo_pgsql &&
-            a2enmod rewrite &&
-            sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf &&
-            sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf &&
-            apache2-foreground"
         environment:
             docker: "true"
         ports:
             - "8080:80"
-        volumes:
-            - .:/var/www/html
         depends_on:
             - postgres
 
@@ -26,7 +18,7 @@ services:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: post
         ports:
-            - "5432:5432"
+            - "5433:5432"
         volumes:
             - pgdata:/var/lib/postgresql/data
 

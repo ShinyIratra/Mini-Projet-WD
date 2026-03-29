@@ -1,6 +1,7 @@
 <?php
 
 use app\controllers\ApiExampleController;
+use app\controllers\PersonController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -25,6 +26,7 @@ $router->group('', function(Router $router) use ($app) {
 		$router->get('/users', [ ApiExampleController::class, 'getUsers' ]);
 		$router->get('/users/@id:[0-9]', [ ApiExampleController::class, 'getUser' ]);
 		$router->post('/users/@id:[0-9]', [ ApiExampleController::class, 'updateUser' ]);
+		$router->get('/persons', [ PersonController::class, 'index' ]);
 	});
 	
 }, [ SecurityHeadersMiddleware::class ]);

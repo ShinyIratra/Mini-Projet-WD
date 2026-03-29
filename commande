@@ -1,0 +1,2 @@
+- Deploiement : docker compose up --build -d
+- Drop la base : docker compose exec postgres psql -U postgres -d mp-wd-0326 -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
