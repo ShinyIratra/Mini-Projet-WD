@@ -1,10 +1,10 @@
-- 2026/03/27 21:59 : Initialisation du projet avec Docker
-- 2026/03/29 19:23 : Conception de la base de données 
-- 2026/03/29 21:06 : Création du /home du front office
-- 2026/03/29 22:24 : create et liste dans le backoffice
-- 2026/03/29 23:07 : update et delete dans le back office
-- 2026/03/30 08:56 : Donnée de test venant de TinyMCE
-- 2026/03/30 12:00 : Réinitialisation pour ne plus utiliser Flight mais Vanilla PHP
+- 2026/03/27 21:59 (Iratra): Initialisation du projet avec Docker
+- 2026/03/29 19:23 (Tafita): Conception de la base de données 
+- 2026/03/29 21:06 (Iratra): Création du /home du front office
+- 2026/03/29 22:24 (Tafita): create et liste dans le backoffice
+- 2026/03/29 23:07 (Tafita): update et delete dans le back office
+- 2026/03/30 08:56 (Iratra): Donnée de test venant de TinyMCE
+- 2026/03/30 12:00 (Iratra) : Réinitialisation pour ne plus utiliser Flight mais Vanilla PHP
 - 2026/03/30 14:36 (Iratra) : Détail d'article
 - 2026/03/30 15:25 (Iratra) : Rewriting de détail article
 - 2026/03/30 15:42 (Iratra) : Création de sitemap.xml et robots.txt
