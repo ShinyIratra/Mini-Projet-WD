@@ -103,16 +103,11 @@ else
                     $datePub = $article['date_publication'] ?? 'now';
                     $idArt = $article['id_article'] ?? $article['Id_Article'] ?? null;
                     
-                    $auteurs_text = 'Auteur inconnu';
-                    $initials = 'A';
-                    $identifiant = 'auteur';
-                    if (!empty($article['auteurs'])) {
-                        $noms = array_map(function($a) { return $a['prenom'] . ' ' . $a['nom']; }, $article['auteurs']);
-                        $auteurs_text = implode(', ', $noms);
-                        $prenom = $article['auteurs'][0]['prenom'] ?? '';
-                        $nom = $article['auteurs'][0]['nom'] ?? '';
-                        $initials = substr($prenom, 0, 1) . substr($nom, 0, 1);
-                        $identifiant = $article['auteurs'][0]['identifiant'] ?? 'auteur';
+                    $auteurs_text = !empty($article['auteur']) ? trim($article['auteur']) : 'Auteur inconnu';
+                    $initials = substr($auteurs_text, 0, 2);
+                    $identifiant = strtolower(str_replace(' ', '', $auteurs_text));
+                    if (empty($identifiant)) {
+                        $identifiant = 'auteur';
                     }
                 ?>
                     <a href="/article/<?= htmlspecialchars($idArt) ?>-<?= htmlspecialchars(creerSlug($article['titre'])) ?>" class="article">
@@ -131,11 +126,7 @@ else
                             <p class="article-snippet"><?= htmlspecialchars(html_entity_decode($article['extrait'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?> <span class="read-more">Voir plus</span></p>
                             
                             <?php if (!empty($article['photos'])): ?>
-                                <?php 
-                                    $cheminPhoto = $article['photos'][0]['chemin'];
-                                    $srcPhoto = str_starts_with($cheminPhoto, '/') ? $cheminPhoto : '/uploads/' . $cheminPhoto;
-                                ?>
-                                <img src="<?= htmlspecialchars($srcPhoto) ?>" alt="<?= htmlspecialchars($article['photos'][0]['alt'] ?? 'Image') ?>" class="article-image">
+                                <img src="/uploads/<?= htmlspecialchars($article['photos'][0]['chemin']) ?>" alt="<?= htmlspecialchars($article['photos'][0]['alt']); ?>" class="article-image">
                             <?php else: ?>
                                 <!-- Fallback image if no photo attached -->
                                 <div class="article-image" style="display: flex; align-items: center; justify-content: center; background-color: #f0f0f0; color: #666; font-style: italic;">

@@ -2,10 +2,7 @@
 -- Ordre d'insertion: Utilisateur -> Categorie -> Article -> Article_photo -> Auteur
 
 INSERT INTO Utilisateur (Id_Utilisateur, nom, prenom, identifiant, mdp) VALUES
-(1, 'Rakoto', 'Lina', 'lina.rakoto', 'test123'),
-(2, 'Andriam', 'Tiana', 'tiana.andriam', 'test123'),
-(3, 'Rasoanaivo', 'Mickael', 'mickael.raso', 'test123'),
-(4, 'Rabe', 'Fara', 'fara.rabe', 'test123');
+(1, 'Admin', 'Boss', 'boss.admin', 'admin');
 
 INSERT INTO Categorie (Id_Categorie, rubrique) VALUES
 (1, 'Politique'),
@@ -14,7 +11,7 @@ INSERT INTO Categorie (Id_Categorie, rubrique) VALUES
 (4, 'Sport'),
 (5, 'Culture');
 
-INSERT INTO Article (Id_Article, titre, contenu, date_publication, Id_Categorie) VALUES
+INSERT INTO Article (Id_Article, titre, contenu, date_publication, auteur, Id_Categorie) VALUES
 (1, '<h1 class="ng-star-inserted"><strong class="ng-star-inserted"><span class="ng-star-inserted">Guerre en Iran : Trump menace de &laquo; couper l&rsquo;eau &raquo; dans tout le Moyen-Orient, les g&eacute;ographes perplexes</span></strong></h1>', '<p><strong class="ng-star-inserted"><span class="ng-star-inserted"><img src="https://placehold.co/800x400/ff8c00/ffffff?text=Illustration+:+Trump+fermant+le+robinet+du+Moyen-Orient" alt="Donald Trump mena&ccedil;ant de couper l''eau au Moyen-Orient - Article parodique" width="484" height="242"></span></strong></p>
 <p class="ng-star-inserted"><strong class="ng-star-inserted"><span class="ng-star-inserted">WASHINGTON D.C.</span></strong><span class="ng-star-inserted"> &mdash; Alors que les tensions s''intensifient autour du golfe Persique, Donald Trump a franchi une nouvelle &eacute;tape dans l''escalade rh&eacute;torique ce mardi. Lors d&rsquo;une conf&eacute;rence de presse improvis&eacute;e depuis le Bureau Ovale, le pr&eacute;sident a menac&eacute; de &laquo; fermer le grand robinet &raquo; du Moyen-Orient si l''Iran ne capitulait pas dans les 48 heures.</span></p>
 <p class="ng-star-inserted"><span class="ng-star-inserted">&laquo; C''est tr&egrave;s simple. J''ai parl&eacute; avec mes g&eacute;n&eacute;raux, ce sont des gens fantastiques, tr&egrave;s intelligents. Je leur ai dit : "Pourquoi on ne coupe pas juste l''eau ?" &raquo;, a d&eacute;clar&eacute; M. Trump devant un parterre de journalistes m&eacute;dus&eacute;s. &laquo; Nous allons construire un barrage. Un barrage immense, magnifique. Le plus beau barrage que le monde ait jamais vu. Et croyez-moi, c''est l''Iran qui va le payer. &raquo;</span></p>
@@ -60,28 +57,20 @@ INSERT INTO Article (Id_Article, titre, contenu, date_publication, Id_Categorie)
 <p class="ng-star-inserted"><span class="ng-star-inserted">La d&eacute;claration a provoqu&eacute; une onde de choc, suivie d''une profonde confusion, dans les capitales mondiales. L''ONU a convoqu&eacute; une r&eacute;union d''urgence de son Conseil de S&eacute;curit&eacute; pour d&eacute;battre d''une r&eacute;solution interdisant &laquo; la fermeture des vannes continentales imaginaires &raquo;.</span></p>
 <p class="ng-star-inserted"><span class="ng-star-inserted">De son c&ocirc;t&eacute;, le ministre iranien des Affaires &eacute;trang&egrave;res a r&eacute;agi sur le r&eacute;seau X (ex-Twitter) : &laquo; Nous condamnons fermement cette menace imp&eacute;rialiste, bien que nous n''ayons absolument aucune id&eacute;e de comment ils comptent s''y prendre techniquement. &raquo;</span></p>
 <p class="ng-star-inserted"><span class="ng-star-inserted">En France, le pr&eacute;sident a appel&eacute; &agrave; la &laquo; d&eacute;sescalade hydrographique &raquo;, tandis qu''un collectif d''hydrologues a publi&eacute; une tribune dans le magazine </span><span class="ng-star-inserted" style="font-style: italic;"><span class="ng-star-inserted">Science</span></span><span class="ng-star-inserted"> rappelant qu''on ne peut pas &laquo; d&eacute;brancher la mer Caspienne avec une cl&eacute; &agrave; molette g&eacute;ante &raquo;.</span></p>
-<p class="ng-star-inserted"><span class="ng-star-inserted">Aux &Eacute;tats-Unis, la strat&eacute;gie semble pourtant porter ses fruits sur le plan politique. Un sondage express r&eacute;alis&eacute; par Fox News r&eacute;v&egrave;le que 62 % des &eacute;lecteurs r&eacute;publicains se disent favorables &agrave; l&rsquo;id&eacute;e de &laquo; trouver la grosse poign&eacute;e rouge sous l''Irak et de la tourner &agrave; fond vers la droite &raquo;.</span></p>', '2026-03-30 05:00:00', 1);
+<p class="ng-star-inserted"><span class="ng-star-inserted">Aux &Eacute;tats-Unis, la strat&eacute;gie semble pourtant porter ses fruits sur le plan politique. Un sondage express r&eacute;alis&eacute; par Fox News r&eacute;v&egrave;le que 62 % des &eacute;lecteurs r&eacute;publicains se disent favorables &agrave; l&rsquo;id&eacute;e de &laquo; trouver la grosse poign&eacute;e rouge sous l''Irak et de la tourner &agrave; fond vers la droite &raquo;.</span></p>', '2026-03-30 05:00:00', 'Lina Rakoto', 1);
 
 INSERT INTO Article_photo (Id_Article_photo, chemin, alt, Id_Article) VALUES
-(1, '/uploads/articles/image-1.jpg', 'Affiche des elections locales 2026', 1);
-INSERT INTO Auteur (Id_Utilisateur, Id_Article) VALUES
-(1, 1);
+(1, 'articles/image-1.jpg', 'Affiche des elections locales 2026', 1);
 
-
-INSERT INTO Article (Id_Article, titre, contenu, date_publication, Id_Categorie) VALUES
-(2, '<h1><strong>L''Iran dévoile son projet de &laquo; dôme anti-sécheresse &raquo; face aux menaces américaines</strong></h1>', '<p><strong>TÉHÉRAN</strong> &mdash; Suite aux déclarations du président américain concernant une potentielle &laquo; coupure d''eau &raquo; au Moyen-Orient, l''Iran n''a pas tardé à réagir. Le gouvernement a annoncé ce matin la mise en chantier d''un gigantesque parapluie inversé visant à récolter la rosée matinale.</p><p>&laquo; Si l''Amérique veut jouer avec nos robinets, nous jouerons avec l''atmosphère &raquo;, a déclaré un porte-parole. Le projet, ironiquement baptisé &laquo; Opération Oasis &raquo;, suscite l''admiration ou la perplexité de la communauté internationale.</p>', '2026-03-31 10:00:00', 1),
-(3, '<h1><strong>La crise iranienne fait trembler les marchés : Ruée mondiale sur l''eau minérale et les chameaux d''occasion</strong></h1>', '<p><strong>LONDRES</strong> &mdash; La Bourse dévisse ce matin. Les menaces d''assèchement total de la région ont provoqué un vent de panique insolite sur les marchés financiers. L''action de grandes marques d''eau en bouteille a bondi de 400 % en l''espace de quelques heures.</p><p>Parallèlement, la valeur du baril de pétrole est tombée à son plus bas historique, les investisseurs estimant que &laquo; de toute façon on ne peut pas boire du pétrole &raquo;. Des concessionnaires à Dubaï signalent une pénurie inédite de chameaux hybrides d''occasion.</p>', '2026-03-31 14:30:00', 2),
-(4, '<h1><strong>Escalade en Iran : L''ONU plaide pour l''envoi massif de pistolets à eau en guise de maintien de la paix</strong></h1>', '<p><strong>GENÈVE</strong> &mdash; Face à ce qui est désormais qualifié de &laquo; première guerre hydro-rhétorique &raquo;, le Conseil de Sécurité de l''ONU tente de calmer le jeu. Une résolution inattendue propose d''armer les casques bleus exclusivement de pistolets à eau en plastique recyclé.</p><p>&laquo; C''est un symbole fort, et cela hydratera les troupes &raquo;, a défendu le Secrétaire Général. La proposition a toutefois été bloquée par le veto américain, arguant que &laquo; les pistolets à eau ne sont pas fabriqués aux États-Unis &raquo;.</p>', '2026-04-01 09:15:00', 1);
+INSERT INTO Article (Id_Article, titre, contenu, date_publication, auteur, Id_Categorie) VALUES
+(2, '<h1><strong>L''Iran dévoile son projet de &laquo; dôme anti-sécheresse &raquo; face aux menaces américaines</strong></h1>', '<p><strong>TÉHÉRAN</strong> &mdash; Suite aux déclarations du président américain concernant une potentielle &laquo; coupure d''eau &raquo; au Moyen-Orient, l''Iran n''a pas tardé à réagir. Le gouvernement a annoncé ce matin la mise en chantier d''un gigantesque parapluie inversé visant à récolter la rosée matinale.</p><p>&laquo; Si l''Amérique veut jouer avec nos robinets, nous jouerons avec l''atmosphère &raquo;, a déclaré un porte-parole. Le projet, ironiquement baptisé &laquo; Opération Oasis &raquo;, suscite l''admiration ou la perplexité de la communauté internationale.</p>', '2026-03-31 10:00:00', 'Tiana Andriam', 1),
+(3, '<h1><strong>La crise iranienne fait trembler les marchés : Ruée mondiale sur l''eau minérale et les chameaux d''occasion</strong></h1>', '<p><strong>LONDRES</strong> &mdash; La Bourse dévisse ce matin. Les menaces d''assèchement total de la région ont provoqué un vent de panique insolite sur les marchés financiers. L''action de grandes marques d''eau en bouteille a bondi de 400 % en l''espace de quelques heures.</p><p>Parallèlement, la valeur du baril de pétrole est tombée à son plus bas historique, les investisseurs estimant que &laquo; de toute façon on ne peut pas boire du pétrole &raquo;. Des concessionnaires à Dubaï signalent une pénurie inédite de chameaux hybrides d''occasion.</p>', '2026-03-31 14:30:00', 'Mickael Rasoanaivo', 2),
+(4, '<h1><strong>Escalade en Iran : L''ONU plaide pour l''envoi massif de pistolets à eau en guise de maintien de la paix</strong></h1>', '<p><strong>GENÈVE</strong> &mdash; Face à ce qui est désormais qualifié de &laquo; première guerre hydro-rhétorique &raquo;, le Conseil de Sécurité de l''ONU tente de calmer le jeu. Une résolution inattendue propose d''armer les casques bleus exclusivement de pistolets à eau en plastique recyclé.</p><p>&laquo; C''est un symbole fort, et cela hydratera les troupes &raquo;, a défendu le Secrétaire Général. La proposition a toutefois été bloquée par le veto américain, arguant que &laquo; les pistolets à eau ne sont pas fabriqués aux États-Unis &raquo;.</p>', '2026-04-01 09:15:00', 'Fara Rabe', 1);
 
 INSERT INTO Article_photo (Id_Article_photo, chemin, alt, Id_Article) VALUES
-(2, '/uploads/articles/image-2.jpg', 'Illustration du dôme iranien', 2),
-(3, '/uploads/articles/image-3.jpg', 'Trader paniqué avec une bouteille d''eau', 3),
-(4, '/uploads/articles/image-4.jpg', 'Casques bleus avec pistolets à eau', 4);
-
-INSERT INTO Auteur (Id_Utilisateur, Id_Article) VALUES
-(2, 2),
-(3, 3),
-(4, 4);
+(2, 'articles/image-2.jpg', 'Illustration du dôme iranien', 2),
+(3, 'articles/image-3.jpg', 'Trader paniqué avec une bouteille d''eau', 3),
+(4, 'articles/image-4.jpg', 'Casques bleus avec pistolets à eau', 4);
 
 -- Si besoin, remettre les sequences en phase apres insertion manuelle des IDs
 SELECT setval('utilisateur_id_utilisateur_seq', (SELECT MAX(Id_Utilisateur) FROM Utilisateur));

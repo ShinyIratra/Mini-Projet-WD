@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 require_once __DIR__ . '/../../inc/connexion.php';
 require_once __DIR__ . '/../../inc/repository/ArticleRepository.php';
 require_once __DIR__ . '/../../inc/services/ArticleService.php';
@@ -25,22 +33,19 @@ if (!is_dir($uploadDir)) {
     mkdir($uploadDir, 0755, true);
 }
 
-$current_auteur = '';
-if (!empty($article['auteurs'])) {
-    $current_auteur = $article['auteurs'][0]['nom'] . ' ' . $article['auteurs'][0]['prenom'];
-}
+$current_auteur = $article['auteur'] ?? '';
 
 // Gestion API recherche auteurs
 if ((isset($_GET['action']) && $_GET['action'] === 'search_auteurs') && isset($_GET['q'])) {
     header('Content-Type: application/json');
     $q = strtolower($_GET['q']);
-    $utilisateurs = $articleService->getAllUtilisateurs();
+    $auteurs_cibles = $articleService->getAllAuteurs();
     $results = [];
 
-    foreach ($utilisateurs as $user) {
-        $nom_complet = $user['nom'] . ' ' . $user['prenom'];
+    foreach ($auteurs_cibles as $auteur_row) {
+        $nom_complet = $auteur_row['auteur'];
         if (strpos(strtolower($nom_complet), $q) !== false) {
-            $results[] = ['id' => $user['id_utilisateur'], 'nom' => $nom_complet];
+            $results[] = ['nom' => $nom_complet];
         }
     }
     echo json_encode(array_slice($results, 0, 10));
@@ -52,35 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titre = $_POST['titre'] ?? '';
     $contenu = $_POST['contenu'] ?? '';
     $id_categorie = $_POST['id_categorie'] ?? null;
-    $auteur_input = $_POST['auteur'] ?? '';
+    $auteur_input = trim($_POST['auteur'] ?? '');
 
     if ($titre && $contenu && $id_categorie && $auteur_input) {
-        // Chercher ou créer l'utilisateur
-        $utilisateurs = $articleService->getAllUtilisateurs();
-        $id_utilisateur = null;
-
-        foreach ($utilisateurs as $user) {
-            if (trim(strtolower($user['nom'] . ' ' . $user['prenom'])) === trim(strtolower($auteur_input))) {
-                $id_utilisateur = $user['id_utilisateur'];
-                break;
-            }
-        }
-
-        if (!$id_utilisateur) {
-            $parts = explode(' ', trim($auteur_input), 2);
-            $nom = $parts[0] ?? '';
-            $prenom = $parts[1] ?? '';
-            $identifiant = strtolower(str_replace(' ', '.', trim($auteur_input)));
-
-            $stmt = $db->prepare("INSERT INTO utilisateur (nom, prenom, identifiant, mdp) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$nom, $prenom, $identifiant, 'temp123']);
-            $id_utilisateur = $db->lastInsertId();
-        }
-
         // Mettre à jour l'article
-        $articleService->updateArticle($id_article, $titre, $contenu, $id_categorie);
-        $articleService->deleteAllAuteurs($id_article);
-        $articleService->insertAuteur($id_article, $id_utilisateur);
+        $articleService->updateArticle($id_article, $titre, $contenu, $auteur_input, $id_categorie);
 
         // Uploader les photos
         if (isset($_FILES['photos'])) {

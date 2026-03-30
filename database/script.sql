@@ -19,6 +19,7 @@ CREATE TABLE Article(
    titre TEXT NOT NULL,
    contenu TEXT NOT NULL,
    date_publication TIMESTAMP NOT NULL,
+   auteur VARCHAR(255)  NOT NULL,
    Id_Categorie INTEGER NOT NULL,
    PRIMARY KEY(Id_Article),
    FOREIGN KEY(Id_Categorie) REFERENCES Categorie(Id_Categorie)
@@ -30,13 +31,5 @@ CREATE TABLE Article_photo(
    alt VARCHAR(255)  NOT NULL,
    Id_Article INTEGER NOT NULL,
    PRIMARY KEY(Id_Article_photo),
-   FOREIGN KEY(Id_Article) REFERENCES Article(Id_Article)
-);
-
-CREATE TABLE Auteur(
-   Id_Utilisateur INTEGER,
-   Id_Article INTEGER,
-   PRIMARY KEY(Id_Utilisateur, Id_Article),
-   FOREIGN KEY(Id_Utilisateur) REFERENCES Utilisateur(Id_Utilisateur),
    FOREIGN KEY(Id_Article) REFERENCES Article(Id_Article)
 );

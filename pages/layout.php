@@ -11,7 +11,7 @@
             <span>À la une</span>
         </a>
         <!-- Lien pointant vers le Backoffice -->
-        <a href="/pages/backoffice/articles.php" class="nav-item">
+        <a href="/pages/backoffice/login.php" class="nav-item">
             <i class="fa-solid fa-gear"></i>
             <span>Backoffice</span>
         </a>

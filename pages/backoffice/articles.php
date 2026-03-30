@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 require_once __DIR__ . '/../../inc/connexion.php';
 require_once __DIR__ . '/../../inc/repository/ArticleRepository.php';
 require_once __DIR__ . '/../../inc/services/ArticleService.php';
@@ -38,9 +46,17 @@ unset($article);
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Articles</h1>
-            <a href="ajouter_article.php" class="btn-add">+ Nouvel article</a>
+        <header class="header-bo">
+            <div>
+                <h1>Articles</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span><?= htmlspecialchars($_SESSION['user_name']) ?></span>
+                </div>
+                <a href="ajouter_article.php" class="btn-add">+ Nouvel article</a>
+                <a href="logout.php" class="btn-logout">Déconnexion</a>
+            </div>
         </header>
 
         <?php if (isset($_GET['success'])): ?>
@@ -48,6 +64,14 @@ unset($article);
                  Opération réussie
                 <button onclick="this.parentElement.style.display='none';">×</button>
             </div>
+            <script>
+                // Efface le paramètre 'success' de l'URL pour ne pas réafficher le message au rafraîchissement
+                if (window.history.replaceState) {
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete('success');
+                    window.history.replaceState(null, '', url.href);
+                }
+            </script>
         <?php endif; ?>
 
         <?php if (empty($articles)): ?>
@@ -71,7 +95,7 @@ unset($article);
                         <tr>
                             <td>
                                 <?php if (!empty($article['photos'])): ?>
-                                    <img src="/uploads/<?= htmlspecialchars($article['photos'][0]['chemin']); ?>" alt="Photo" class="article-photo">
+                                    <img src="/uploads/<?= htmlspecialchars($article['photos'][0]['chemin']); ?>" alt="<?= htmlspecialchars($article['photos'][0]['alt']); ?>" class="article-photo">
                                 <?php else: ?>
                                     <span style="color: #999;">Pas de photo</span>
                                 <?php endif; ?>

@@ -64,25 +64,24 @@ class ArticleRepository
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function insertArticle($titre, $contenu, $id_categorie)
+    public function insertArticle($titre, $contenu, $auteur, $id_categorie)
     {
-        $requete = "INSERT INTO article (titre, contenu, date_publication, id_categorie) VALUES (?, ?, NOW(), ?)";
+        $requete = "INSERT INTO article (titre, contenu, date_publication, auteur, id_categorie) VALUES (?, ?, NOW(), ?, ?)";
         $stmt = $this->db->prepare($requete);
-        $stmt->execute([$titre, $contenu, $id_categorie]);
+        $stmt->execute([$titre, $contenu, $auteur, $id_categorie]);
         return $this->db->lastInsertId();
     }
 
-    public function updateArticle($id, $titre, $contenu, $id_categorie)
+    public function updateArticle($id, $titre, $contenu, $auteur, $id_categorie)
     {
-        $requete = "UPDATE article SET titre = ?, contenu = ?, id_categorie = ? WHERE id_article = ?";
+        $requete = "UPDATE article SET titre = ?, contenu = ?, auteur = ?, id_categorie = ? WHERE id_article = ?";
         $stmt = $this->db->prepare($requete);
-        $stmt->execute([$titre, $contenu, $id_categorie, $id]);
+        $stmt->execute([$titre, $contenu, $auteur, $id_categorie, $id]);
     }
 
     public function deleteArticle($id)
     {
         $this->db->prepare("DELETE FROM article_photo WHERE id_article = ?")->execute([$id]);
-        $this->db->prepare("DELETE FROM auteur WHERE id_article = ?")->execute([$id]);
         $this->db->prepare("DELETE FROM article WHERE id_article = ?")->execute([$id]);
     }
 
@@ -108,37 +107,13 @@ class ArticleRepository
         $stmt->execute([$id_photo]);
     }
 
-    public function getAuteursByArticle($id)
-    {
-        $requete = "SELECT u.id_utilisateur, u.nom, u.prenom, u.identifiant FROM auteur a
-                   JOIN utilisateur u ON a.id_utilisateur = u.id_utilisateur
-                   WHERE a.id_article = ?";
-        $stmt = $this->db->prepare($requete);
-        $stmt->execute([$id]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function insertAuteur($id_article, $id_utilisateur)
-    {
-        $requete = "INSERT INTO auteur (id_article, id_utilisateur) VALUES (?, ?)";
-        $stmt = $this->db->prepare($requete);
-        $stmt->execute([$id_article, $id_utilisateur]);
-    }
-
-    public function deleteAllAuteurs($id_article)
-    {
-        $requete = "DELETE FROM auteur WHERE id_article = ?";
-        $stmt = $this->db->prepare($requete);
-        $stmt->execute([$id_article]);
-    }
-
     public function getAllCategories()
     {
         return $this->db->query('SELECT id_categorie, rubrique FROM categorie ORDER BY rubrique')->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAllUtilisateurs()
+    public function getAllAuteurs()
     {
-        return $this->db->query('SELECT id_utilisateur, nom, prenom FROM utilisateur ORDER BY nom')->fetchAll(PDO::FETCH_ASSOC);
+        return $this->db->query('SELECT DISTINCT auteur FROM article WHERE auteur IS NOT NULL AND auteur != \'\' ORDER BY auteur')->fetchAll(PDO::FETCH_ASSOC);
     }
 }
