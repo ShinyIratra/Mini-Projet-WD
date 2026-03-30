@@ -2,10 +2,7 @@
 -- Ordre d'insertion: Utilisateur -> Categorie -> Article -> Article_photo -> Auteur
 
 INSERT INTO Utilisateur (Id_Utilisateur, nom, prenom, identifiant, mdp) VALUES
-(1, 'Rakoto', 'Lina', 'lina.rakoto', 'test123'),
-(2, 'Andriam', 'Tiana', 'tiana.andriam', 'test123'),
-(3, 'Rasoanaivo', 'Mickael', 'mickael.raso', 'test123'),
-(4, 'Rabe', 'Fara', 'fara.rabe', 'test123');
+(1, 'Admin', 'Boss', 'boss.admin', 'admin');
 
 INSERT INTO Categorie (Id_Categorie, rubrique) VALUES
 (1, 'Politique'),

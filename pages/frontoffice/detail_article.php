@@ -55,13 +55,7 @@ $date_formatee = "$jour $mois $annee à $heure";
 $latest_articles = array_slice($articleService->getTitreArticles(), 0, 5);
 
 // Auteurs
-$auteurs_noms = [];
-if (!empty($article['auteurs'])) {
-    foreach ($article['auteurs'] as $auteur) {
-        $auteurs_noms[] = $auteur['prenom'] . ' ' . $auteur['nom'];
-    }
-}
-$liste_auteurs = !empty($auteurs_noms) ? implode(', ', $auteurs_noms) : 'La Rédaction';
+$liste_auteurs = !empty($article['auteur']) ? trim($article['auteur']) : 'La Rédaction';
 
 ?>
 <!DOCTYPE html>

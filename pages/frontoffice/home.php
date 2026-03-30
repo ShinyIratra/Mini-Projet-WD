@@ -103,16 +103,11 @@ else
                     $datePub = $article['date_publication'] ?? 'now';
                     $idArt = $article['id_article'] ?? $article['Id_Article'] ?? null;
                     
-                    $auteurs_text = 'Auteur inconnu';
-                    $initials = 'A';
-                    $identifiant = 'auteur';
-                    if (!empty($article['auteurs'])) {
-                        $noms = array_map(function($a) { return $a['prenom'] . ' ' . $a['nom']; }, $article['auteurs']);
-                        $auteurs_text = implode(', ', $noms);
-                        $prenom = $article['auteurs'][0]['prenom'] ?? '';
-                        $nom = $article['auteurs'][0]['nom'] ?? '';
-                        $initials = substr($prenom, 0, 1) . substr($nom, 0, 1);
-                        $identifiant = $article['auteurs'][0]['identifiant'] ?? 'auteur';
+                    $auteurs_text = !empty($article['auteur']) ? trim($article['auteur']) : 'Auteur inconnu';
+                    $initials = substr($auteurs_text, 0, 2);
+                    $identifiant = strtolower(str_replace(' ', '', $auteurs_text));
+                    if (empty($identifiant)) {
+                        $identifiant = 'auteur';
                     }
                 ?>
                     <a href="/article/<?= htmlspecialchars($idArt) ?>-<?= htmlspecialchars(creerSlug($article['titre'])) ?>" class="article">

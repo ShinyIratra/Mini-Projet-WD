@@ -33,19 +33,18 @@ class ArticleService
         $article = $this->articleRepository->getArticleById($id);
         if ($article) {
             $article['photos'] = $this->articleRepository->getPhotosByArticle($id);
-            $article['auteurs'] = $this->articleRepository->getAuteursByArticle($id);
         }
         return $article;
     }
 
-    public function insertArticle($titre, $contenu, $id_categorie)
+    public function insertArticle($titre, $contenu, $auteur, $id_categorie)
     {
-        return $this->articleRepository->insertArticle($titre, $contenu, $id_categorie);
+        return $this->articleRepository->insertArticle($titre, $contenu, $auteur, $id_categorie);
     }
 
-    public function updateArticle($id, $titre, $contenu, $id_categorie)
+    public function updateArticle($id, $titre, $contenu, $auteur, $id_categorie)
     {
-        $this->articleRepository->updateArticle($id, $titre, $contenu, $id_categorie);
+        $this->articleRepository->updateArticle($id, $titre, $contenu, $auteur, $id_categorie);
     }
 
     public function deleteArticle($id)
@@ -63,23 +62,13 @@ class ArticleService
         $this->articleRepository->deletePhoto($id_photo);
     }
 
-    public function insertAuteur($id_article, $id_utilisateur)
-    {
-        $this->articleRepository->insertAuteur($id_article, $id_utilisateur);
-    }
-
-    public function deleteAllAuteurs($id_article)
-    {
-        $this->articleRepository->deleteAllAuteurs($id_article);
-    }
-
     public function getAllCategories()
     {
         return $this->articleRepository->getAllCategories();
     }
 
-    public function getAllUtilisateurs()
+    public function getAllAuteurs()
     {
-        return $this->articleRepository->getAllUtilisateurs();
+        return $this->articleRepository->getAllAuteurs();
     }
 }
