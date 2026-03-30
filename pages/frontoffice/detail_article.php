@@ -103,7 +103,7 @@ $liste_auteurs = !empty($auteurs_noms) ? implode(', ', $auteurs_noms) : 'La Réd
                 
                 <!-- TITRE (Injecté depuis SQL : champ "titre") -->
                 <div class="article-title-container">
-                    <?= $article['titre'] ?>
+                    <h1><?= htmlspecialchars(strip_tags($article['titre'])) ?></h1>
                 </div>
 
                 <div class="author-box">

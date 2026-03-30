@@ -131,7 +131,11 @@ else
                             <p class="article-snippet"><?= htmlspecialchars(html_entity_decode($article['extrait'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?> <span class="read-more">Voir plus</span></p>
                             
                             <?php if (!empty($article['photos'])): ?>
-                                <img src="<?= htmlspecialchars($article['photos'][0]['chemin']) ?>" alt="<?= htmlspecialchars($article['photos'][0]['alt'] ?? 'Image') ?>" class="article-image">
+                                <?php 
+                                    $cheminPhoto = $article['photos'][0]['chemin'];
+                                    $srcPhoto = str_starts_with($cheminPhoto, '/') ? $cheminPhoto : '/uploads/' . $cheminPhoto;
+                                ?>
+                                <img src="<?= htmlspecialchars($srcPhoto) ?>" alt="<?= htmlspecialchars($article['photos'][0]['alt'] ?? 'Image') ?>" class="article-image">
                             <?php else: ?>
                                 <!-- Fallback image if no photo attached -->
                                 <div class="article-image" style="display: flex; align-items: center; justify-content: center; background-color: #f0f0f0; color: #666; font-style: italic;">
