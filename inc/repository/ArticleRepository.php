@@ -15,7 +15,7 @@ class ArticleRepository
 
     public function getArticles(): array
     {
-        return $this->db->query('SELECT * FROM article')->fetchAll();
+        return $this->db->query('SELECT * FROM article')->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getTitreArticles(): array
@@ -31,7 +31,7 @@ class ArticleRepository
             ORDER BY date_publication DESC
         ";
 
-        return $this->db->fetchAll($sql);
+        return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getArticleById($id)
@@ -39,7 +39,7 @@ class ArticleRepository
         $requete = "SELECT * FROM article WHERE id_article = ?";
         $stmt = $this->db->prepare($requete);
         $stmt->execute([$id]);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function insertArticle($titre, $contenu, $id_categorie)
@@ -59,9 +59,9 @@ class ArticleRepository
 
     public function deleteArticle($id)
     {
-        $this->db->query("DELETE FROM article_photo WHERE id_article = ?", [$id]);
-        $this->db->query("DELETE FROM auteur WHERE id_article = ?", [$id]);
-        $this->db->query("DELETE FROM article WHERE id_article = ?", [$id]);
+        $this->db->prepare("DELETE FROM article_photo WHERE id_article = ?")->execute([$id]);
+        $this->db->prepare("DELETE FROM auteur WHERE id_article = ?")->execute([$id]);
+        $this->db->prepare("DELETE FROM article WHERE id_article = ?")->execute([$id]);
     }
 
     public function getPhotosByArticle($id)
@@ -69,7 +69,7 @@ class ArticleRepository
         $requete = "SELECT * FROM article_photo WHERE id_article = ?";
         $stmt = $this->db->prepare($requete);
         $stmt->execute([$id]);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function insertPhoto($id_article, $chemin, $alt)
@@ -93,7 +93,7 @@ class ArticleRepository
                    WHERE a.id_article = ?";
         $stmt = $this->db->prepare($requete);
         $stmt->execute([$id]);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function insertAuteur($id_article, $id_utilisateur)
@@ -112,11 +112,11 @@ class ArticleRepository
 
     public function getAllCategories()
     {
-        return $this->db->query('SELECT id_categorie, rubrique FROM categorie ORDER BY rubrique')->fetchAll();
+        return $this->db->query('SELECT id_categorie, rubrique FROM categorie ORDER BY rubrique')->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getAllUtilisateurs()
     {
-        return $this->db->query('SELECT id_utilisateur, nom, prenom FROM utilisateur ORDER BY nom')->fetchAll();
+        return $this->db->query('SELECT id_utilisateur, nom, prenom FROM utilisateur ORDER BY nom')->fetchAll(PDO::FETCH_ASSOC);
     }
 }
