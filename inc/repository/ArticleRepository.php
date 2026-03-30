@@ -88,7 +88,7 @@ class ArticleRepository
 
     public function getAuteursByArticle($id)
     {
-        $requete = "SELECT u.id_utilisateur, u.nom, u.prenom FROM auteur a
+        $requete = "SELECT u.id_utilisateur, u.nom, u.prenom, u.identifiant FROM auteur a
                    JOIN utilisateur u ON a.id_utilisateur = u.id_utilisateur
                    WHERE a.id_article = ?";
         $stmt = $this->db->prepare($requete);
