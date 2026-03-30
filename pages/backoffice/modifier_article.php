@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $filepath = $uploadDir . $filename;
 
                     if (move_uploaded_file($_FILES['photos']['tmp_name'][$i], $filepath)) {
-                        $articleService->insertPhoto($id_article, 'articles/' . $filename, $alt);
+                        $articleService->insertPhoto($id_article, '/uploads/articles/' . $filename, $alt);
                     }
                 }
             }
