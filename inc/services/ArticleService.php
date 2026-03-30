@@ -24,6 +24,10 @@ class ArticleService
         return $this->articleRepository->getTitreArticles();
     }
     
+    public function searchArticles($searchTerm): array
+    {
+        return $this->articleRepository->searchArticles($searchTerm);
+    }
     public function getArticleById($id)
     {
         $article = $this->articleRepository->getArticleById($id);

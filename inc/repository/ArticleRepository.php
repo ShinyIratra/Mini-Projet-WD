@@ -34,6 +34,28 @@ class ArticleRepository
         return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function searchArticles($searchTerm): array
+    {
+        $sql = "
+            SELECT 
+                Id_Article, 
+                titre, 
+                date_publication, 
+                Id_Categorie,
+                LEFT(REGEXP_REPLACE(contenu, '<[^>]*>', '', 'g'), 200) || '...' AS contenu
+            FROM Article
+            WHERE titre ILIKE :search OR contenu ILIKE :search
+            ORDER BY date_publication DESC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $searchTerm = '%' . $searchTerm . '%';
+        $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getArticleById($id)
     {
         $requete = "SELECT * FROM article WHERE id_article = ?";

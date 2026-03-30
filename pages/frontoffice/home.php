@@ -24,28 +24,55 @@ if ($categories_base) {
     }
 }
 
-// Récupérer les articles
-$articles_base = $articleService->getTitreArticles();
 $articles = [];
 
-foreach ($articles_base as $art) {
-    $id = $art['id_article'] ?? $art['Id_Article'] ?? null;
-    if ($id) {
-        $full_article = $articleService->getArticleById($id);
-        if ($full_article) {
-            // Ajouter l'extrait du contenu venant de getTitreArticles
-            $full_article['extrait'] = $art['contenu'] ?? '';
-            
-            // Catégorie
-            $cat_id = $full_article['id_categorie'] ?? $full_article['Id_Categorie'] ?? null;
-            $full_article['rubrique'] = $cat_id && isset($categories[$cat_id]) ? $categories[$cat_id] : 'Actualité';
-            
-            $articles[] = $full_article;
+// Récupérer les articles
+if(isset($_GET['search']))
+    {
+        $criteria = trim($_GET['search']);
+        $articles_base = $articleService->searchArticles($criteria);
+
+        foreach ($articles_base as $art) {
+            $id = $art['id_article'] ?? $art['Id_Article'] ?? null;
+            if ($id) {
+                $full_article = $articleService->getArticleById($id);
+                if ($full_article) {
+                    // Ajouter l'extrait du contenu venant de searchArticles
+                    $full_article['extrait'] = $art['contenu'] ?? '';
+                    
+                    // Catégorie
+                    $cat_id = $full_article['id_categorie'] ?? $full_article['Id_Categorie'] ?? null;
+                    $full_article['rubrique'] = $cat_id && isset($categories[$cat_id]) ? $categories[$cat_id] : 'Actualité';
+                    
+                    $articles[] = $full_article;
+                }
+            }
         }
     }
-}
+else
+    {
+        $articles_base = $articleService->getTitreArticles();
+
+        foreach ($articles_base as $art) {
+            $id = $art['id_article'] ?? $art['Id_Article'] ?? null;
+            if ($id) {
+                $full_article = $articleService->getArticleById($id);
+                if ($full_article) {
+                    // Ajouter l'extrait du contenu venant de getTitreArticles
+                    $full_article['extrait'] = $art['contenu'] ?? '';
+                    
+                    // Catégorie
+                    $cat_id = $full_article['id_categorie'] ?? $full_article['Id_Categorie'] ?? null;
+                    $full_article['rubrique'] = $cat_id && isset($categories[$cat_id]) ? $categories[$cat_id] : 'Actualité';
+                    
+                    $articles[] = $full_article;
+                }
+            }
+        }
+    }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -66,8 +93,7 @@ foreach ($articles_base as $art) {
         <main class="feed">
             <div class="feed-header">
                 <div class="feed-tabs">
-                    <div class="tab active" onclick="switchTab(this)">Pour vous</div>
-                    <div class="tab" onclick="switchTab(this)">Abonnements</div>
+                    <div class="tab active">Pour vous</div>
                 </div>
             </div>
 
@@ -127,7 +153,9 @@ foreach ($articles_base as $art) {
         <aside class="sidebar-right">
             <div class="search-bar">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Rechercher dans l'actualité...">
+                <form method="GET" action="/pages/frontoffice/home.php" style="flex: 1;">
+                    <input type="text" name="search" placeholder="Rechercher dans l'actualité..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                </form>
             </div>
 
             <div class="trending-box">
