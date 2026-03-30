@@ -60,7 +60,7 @@ INSERT INTO Article (Id_Article, titre, contenu, date_publication, auteur, Id_Ca
 <p class="ng-star-inserted"><span class="ng-star-inserted">Aux &Eacute;tats-Unis, la strat&eacute;gie semble pourtant porter ses fruits sur le plan politique. Un sondage express r&eacute;alis&eacute; par Fox News r&eacute;v&egrave;le que 62 % des &eacute;lecteurs r&eacute;publicains se disent favorables &agrave; l&rsquo;id&eacute;e de &laquo; trouver la grosse poign&eacute;e rouge sous l''Irak et de la tourner &agrave; fond vers la droite &raquo;.</span></p>', '2026-03-30 05:00:00', 'Lina Rakoto', 1);
 
 INSERT INTO Article_photo (Id_Article_photo, chemin, alt, Id_Article) VALUES
-(1, '/uploads/articles/image-1.jpg', 'Affiche des elections locales 2026', 1);
+(1, 'articles/image-1.jpg', 'Affiche des elections locales 2026', 1);
 
 INSERT INTO Article (Id_Article, titre, contenu, date_publication, auteur, Id_Categorie) VALUES
 (2, '<h1><strong>L''Iran dévoile son projet de &laquo; dôme anti-sécheresse &raquo; face aux menaces américaines</strong></h1>', '<p><strong>TÉHÉRAN</strong> &mdash; Suite aux déclarations du président américain concernant une potentielle &laquo; coupure d''eau &raquo; au Moyen-Orient, l''Iran n''a pas tardé à réagir. Le gouvernement a annoncé ce matin la mise en chantier d''un gigantesque parapluie inversé visant à récolter la rosée matinale.</p><p>&laquo; Si l''Amérique veut jouer avec nos robinets, nous jouerons avec l''atmosphère &raquo;, a déclaré un porte-parole. Le projet, ironiquement baptisé &laquo; Opération Oasis &raquo;, suscite l''admiration ou la perplexité de la communauté internationale.</p>', '2026-03-31 10:00:00', 'Tiana Andriam', 1),
@@ -68,9 +68,9 @@ INSERT INTO Article (Id_Article, titre, contenu, date_publication, auteur, Id_Ca
 (4, '<h1><strong>Escalade en Iran : L''ONU plaide pour l''envoi massif de pistolets à eau en guise de maintien de la paix</strong></h1>', '<p><strong>GENÈVE</strong> &mdash; Face à ce qui est désormais qualifié de &laquo; première guerre hydro-rhétorique &raquo;, le Conseil de Sécurité de l''ONU tente de calmer le jeu. Une résolution inattendue propose d''armer les casques bleus exclusivement de pistolets à eau en plastique recyclé.</p><p>&laquo; C''est un symbole fort, et cela hydratera les troupes &raquo;, a défendu le Secrétaire Général. La proposition a toutefois été bloquée par le veto américain, arguant que &laquo; les pistolets à eau ne sont pas fabriqués aux États-Unis &raquo;.</p>', '2026-04-01 09:15:00', 'Fara Rabe', 1);
 
 INSERT INTO Article_photo (Id_Article_photo, chemin, alt, Id_Article) VALUES
-(2, '/uploads/articles/image-2.jpg', 'Illustration du dôme iranien', 2),
-(3, '/uploads/articles/image-3.jpg', 'Trader paniqué avec une bouteille d''eau', 3),
-(4, '/uploads/articles/image-4.jpg', 'Casques bleus avec pistolets à eau', 4);
+(2, 'articles/image-2.jpg', 'Illustration du dôme iranien', 2),
+(3, 'articles/image-3.jpg', 'Trader paniqué avec une bouteille d''eau', 3),
+(4, 'articles/image-4.jpg', 'Casques bleus avec pistolets à eau', 4);
 
 -- Si besoin, remettre les sequences en phase apres insertion manuelle des IDs
 SELECT setval('utilisateur_id_utilisateur_seq', (SELECT MAX(Id_Utilisateur) FROM Utilisateur));

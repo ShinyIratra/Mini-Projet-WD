@@ -64,6 +64,14 @@ unset($article);
                  Opération réussie
                 <button onclick="this.parentElement.style.display='none';">×</button>
             </div>
+            <script>
+                // Efface le paramètre 'success' de l'URL pour ne pas réafficher le message au rafraîchissement
+                if (window.history.replaceState) {
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete('success');
+                    window.history.replaceState(null, '', url.href);
+                }
+            </script>
         <?php endif; ?>
 
         <?php if (empty($articles)): ?>

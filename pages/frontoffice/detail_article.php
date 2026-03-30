@@ -52,7 +52,13 @@ $heure = $date_pub->format('H\hi');
 $date_formatee = "$jour $mois $annee à $heure";
 
 // 5 Derniers articles
-$latest_articles = array_slice($articleService->getTitreArticles(), 0, 5);
+$latest_articles_base = array_slice($articleService->getTitreArticles(), 0, 5);
+$latest_articles = [];
+foreach ($latest_articles_base as $lat_art) {
+    $id_temp = $lat_art['id_article'] ?? $lat_art['Id_Article'] ?? null;
+    $lat_art['photos'] = $id_temp ? $articleRepository->getPhotosByArticle($id_temp) : [];
+    $latest_articles[] = $lat_art;
+}
 
 // Auteurs
 $liste_auteurs = !empty($article['auteur']) ? trim($article['auteur']) : 'La Rédaction';
@@ -139,7 +145,9 @@ $liste_auteurs = !empty($article['auteur']) ? trim($article['auteur']) : 'La Ré
                 $lat_id = $lat_art['id_article'] ?? $lat_art['Id_Article'] ?? '#';
             ?>
             <a href="detail_article.php?id=<?= $lat_id ?>" class="related-article">
-                <img src="https://placehold.co/100x100/1d9bf0/ffffff?text=News" alt="News" class="related-img">
+                <?php if (!empty($lat_art['photos'])): ?>
+                    <img src="/uploads/<?= htmlspecialchars($lat_art['photos'][0]['chemin']) ?>" alt="<?= htmlspecialchars($lat_art['photos'][0]['alt']) ?>" class="related-img">
+                <?php endif; ?>
                 <div class="related-content">
                     <span class="related-rubrique"><?= htmlspecialchars($cat_name_lat) ?></span>
                     <h4 class="related-title"><?= htmlspecialchars(strip_tags($lat_art['titre'])) ?></h4>
