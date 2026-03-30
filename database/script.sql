@@ -40,3 +40,8 @@ CREATE TABLE Auteur(
    FOREIGN KEY(Id_Utilisateur) REFERENCES Utilisateur(Id_Utilisateur),
    FOREIGN KEY(Id_Article) REFERENCES Article(Id_Article)
 );
+
+-- Utilisateur admin par défaut pour le backoffice
+INSERT INTO Utilisateur (nom, prenom, identifiant, mdp)
+VALUES ('Admin', 'User', 'admin', 'admin')
+ON CONFLICT (identifiant) DO NOTHING;

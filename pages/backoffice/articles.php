@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 require_once __DIR__ . '/../../inc/connexion.php';
 require_once __DIR__ . '/../../inc/repository/ArticleRepository.php';
 require_once __DIR__ . '/../../inc/services/ArticleService.php';
@@ -38,9 +46,17 @@ unset($article);
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Articles</h1>
-            <a href="ajouter_article.php" class="btn-add">+ Nouvel article</a>
+        <header class="header-bo">
+            <div>
+                <h1>Articles</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span><?= htmlspecialchars($_SESSION['user_name']) ?></span>
+                </div>
+                <a href="ajouter_article.php" class="btn-add">+ Nouvel article</a>
+                <a href="logout.php" class="btn-logout">Déconnexion</a>
+            </div>
         </header>
 
         <?php if (isset($_GET['success'])): ?>

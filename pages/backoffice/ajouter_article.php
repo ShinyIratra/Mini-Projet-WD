@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 require_once __DIR__ . '/../../inc/connexion.php';
 require_once __DIR__ . '/../../inc/repository/ArticleRepository.php';
 require_once __DIR__ . '/../../inc/services/ArticleService.php';
@@ -103,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label for="titre">Titre *</label>
-                    <input type="text" id="titre" name="titre" required placeholder="Titre de l'article">
+                    <input type="text" id="titre" name="titre" autofocus required placeholder="Titre de l'article">
                 </div>
 
                 <div class="form-group">
