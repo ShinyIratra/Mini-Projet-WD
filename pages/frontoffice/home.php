@@ -281,6 +281,15 @@ foreach ($articles_base as $art) {
             margin-bottom: 12px;
         }
 
+        .read-more {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+        
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
         .article-image {
             width: 100%;
             height: 300px;
@@ -476,7 +485,7 @@ foreach ($articles_base as $art) {
                             </div>
                             <div class="rubrique-tag"><?= htmlspecialchars($article['rubrique']) ?></div>
                             <h2 class="article-title"><?= htmlspecialchars(html_entity_decode(strip_tags($article['titre']), ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?></h2>
-                            <p class="article-snippet"><?= htmlspecialchars(html_entity_decode($article['extrait'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?></p>
+                            <p class="article-snippet"><?= htmlspecialchars(html_entity_decode($article['extrait'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?> <span class="read-more">Voir plus</span></p>
                             
                             <?php if (!empty($article['photos'])): ?>
                                 <img src="<?= htmlspecialchars($article['photos'][0]['chemin']) ?>" alt="<?= htmlspecialchars($article['photos'][0]['alt'] ?? 'Image') ?>" class="article-image">
