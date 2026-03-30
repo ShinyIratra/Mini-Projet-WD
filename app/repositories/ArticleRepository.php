@@ -18,6 +18,22 @@ class ArticleRepository
         return $this->db->query('SELECT * FROM article')->fetchAll();
     }
 
+    public function getTitreArticles(): array
+    {
+        $sql = "
+            SELECT 
+                Id_Article, 
+                titre, 
+                date_publication, 
+                Id_Categorie,
+                LEFT(REGEXP_REPLACE(contenu, '<[^>]*>', '', 'g'), 200) || '...' AS contenu
+            FROM Article
+            ORDER BY date_publication DESC
+        ";
+
+        return $this->db->fetchAll($sql);
+    }
+
     public function getArticleById($id)
     {
         $requete = "SELECT * FROM article WHERE id_article = ?";

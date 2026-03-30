@@ -20,7 +20,7 @@ class FrontOfficeController
     {
         $articleRepository = new ArticleRepository($this->app->db());
         $articleService = new ArticleService($articleRepository);
-        $articles = $articleService->getArticles();
+        $articles = $articleService->getTitreArticles();
 
         $this->app->render('frontoffice/home', [
             'articles' => $articles,

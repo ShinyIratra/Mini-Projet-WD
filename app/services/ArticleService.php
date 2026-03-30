@@ -19,6 +19,11 @@ class ArticleService
         return $this->articleRepository->getArticles();
     }
 
+    public function getTitreArticles(): array
+    {
+        return $this->articleRepository->getTitreArticles();
+    }
+    
     public function getArticleById($id)
     {
         $article = $this->articleRepository->getArticleById($id);

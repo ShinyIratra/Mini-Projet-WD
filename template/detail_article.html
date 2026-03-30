@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guerre en Iran : Trump menace de « couper l’eau »... - NewsFeed</title>
+    
+    <!-- Polices : Inter pour l'UI, Lora pour la lecture -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #0f1419;
+            --text-article: #1a1a1a;
+            --text-muted: #536471;
+            --border-color: #eff3f4;
+            --primary-blue: #1d9bf0;
+            --hover-bg: rgba(15, 20, 25, 0.05);
+            --font-ui: 'Inter', sans-serif;
+            --font-serif: 'Lora', serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color); color: var(--text-main);
+            font-family: var(--font-ui); display: flex; justify-content: center;
+        }
+
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 4px;
+            background-color: var(--primary-blue); width: 0%;
+            z-index: 9999; transition: width 0.1s ease;
+        }
+
+        .container { display: flex; width: 100%; max-width: 1350px; min-height: 100vh; }
+
+        /* --- SIDEBAR GAUCHE --- */
+        .sidebar-left {
+            width: 275px; padding: 0 12px; position: sticky; top: 0;
+            height: 100vh; display: flex; flex-direction: column; border-right: 1px solid var(--border-color);
+        }
+        .logo { font-size: 28px; font-weight: 800; padding: 12px; margin: 5px 0 10px 0; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .nav-links { display: flex; flex-direction: column; gap: 5px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 20px; padding: 12px;
+            font-size: 20px; color: var(--text-main); text-decoration: none;
+            border-radius: 30px; transition: background 0.2s; width: fit-content;
+        }
+        .nav-item:hover { background-color: var(--hover-bg); }
+        .subscribe-btn {
+            background-color: var(--primary-blue); color: white; border: none;
+            border-radius: 30px; padding: 16px; font-size: 17px; font-weight: 700;
+            margin-top: 20px; cursor: pointer; width: 90%; transition: 0.2s;
+        }
+
+        /* --- COLONNE CENTRALE --- */
+        .article-container {
+            width: 700px; border-right: 1px solid var(--border-color);
+            min-height: 100vh; background-color: var(--bg-color);
+        }
+
+        .top-header {
+            position: sticky; top: 0; background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color);
+            z-index: 10; display: flex; align-items: center; padding: 0 16px; height: 53px; gap: 20px;
+        }
+        .back-btn {
+            width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            border: none; background: none; cursor: pointer; font-size: 18px; text-decoration: none; color: var(--text-main);
+        }
+        .back-btn:hover { background-color: var(--hover-bg); }
+
+        .article-content { padding: 24px 32px; }
+
+        .rubrique { color: var(--primary-blue); font-weight: 700; font-size: 14px; text-transform: uppercase; margin-bottom: 12px; display: block; letter-spacing: 0.5px;}
+        
+        /* Nettoyage du H1 issu de TinyMCE */
+        .article-title-container h1 { 
+            font-size: 36px; font-weight: 800; line-height: 1.2; 
+            margin-bottom: 16px; letter-spacing: -0.5px; font-family: var(--font-ui);
+            color: var(--text-main);
+        }
+
+        .author-box { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); margin-bottom: 24px; }
+        .author-info { display: flex; align-items: center; gap: 12px; }
+        .author-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+        .author-details .name { font-weight: 700; font-size: 15px; }
+        .author-details .meta { font-size: 14px; color: var(--text-muted); margin-top: 2px;}
+        
+        .share-actions { display: flex; gap: 8px; }
+        .share-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-color); background: none; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-main); }
+        .share-btn:hover { background-color: var(--hover-bg); }
+
+        /* ========================================================= */
+        /* STYLES SPÉCIFIQUES POUR LE CONTENU ISSU DE TINYMCE        */
+        /* ========================================================= */
+        .tiny-mce-content {
+            font-family: var(--font-serif);
+            font-size: 19px;
+            line-height: 1.7;
+            color: var(--text-article);
+        }
+
+        /* Paragraphes */
+        .tiny-mce-content p { margin-bottom: 24px; }
+        
+        /* La lettrine : Appliquée au premier VRAI texte (on ignore les images) */
+        .tiny-mce-content > p:nth-of-type(2)::first-letter {
+            float: left; font-size: 65px; line-height: 55px; padding-top: 4px; 
+            padding-right: 8px; padding-left: 3px; font-family: var(--font-ui); 
+            font-weight: 800; color: var(--text-main);
+        }
+
+        /* Images insérées par TinyMCE */
+        .tiny-mce-content img {
+            max-width: 100% !important; 
+            height: auto !important; 
+            border-radius: 12px; 
+            border: 1px solid var(--border-color);
+            margin: 10px 0 20px 0;
+            display: block;
+            cursor: pointer; /* Pour la lightbox */
+        }
+
+        /* Tableaux insérés par TinyMCE */
+        .tiny-mce-content table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            margin: 32px 0;
+            font-family: var(--font-ui); /* Tableaux en police UI pour la lisibilité */
+            font-size: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px var(--border-color);
+        }
+        
+        .tiny-mce-content td, .tiny-mce-content th {
+            border: 1px solid var(--border-color) !important;
+            padding: 12px 16px;
+            vertical-align: middle;
+        }
+
+        .tiny-mce-content tr:first-child td, .tiny-mce-content th {
+            background-color: var(--hover-bg);
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .tiny-mce-content tr:nth-child(even) {
+            background-color: rgba(0,0,0,0.02);
+        }
+        
+        /* Nettoyage des styles en ligne parasites de TinyMCE */
+        .tiny-mce-content span, .tiny-mce-content strong {
+            background-color: transparent !important;
+            line-height: inherit;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 10000;
+            display: none; justify-content: center; align-items: center; flex-direction: column;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .lightbox.active { display: flex; opacity: 1; }
+        .lightbox img { max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .lightbox-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; background: none; border: none; }
+        .lightbox-caption { color: rgba(255,255,255,0.7); margin-top: 15px; font-family: var(--font-ui); font-size: 15px; text-align: center; max-width: 80%; }
+
+        .article-tags { display: flex; gap: 10px; margin-top: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+        .tag { background-color: var(--border-color); padding: 8px 16px; border-radius: 20px; font-size: 14px; font-family: var(--font-ui); font-weight: 600; text-decoration: none; color: var(--text-main); }
+        .bottom-actions { display: flex; justify-content: space-around; padding: 16px 0; border-bottom: 1px solid var(--border-color); }
+        .action-btn { display: flex; align-items: center; gap: 8px; font-size: 14px; background: none; border: none; color: var(--text-muted); cursor: pointer; }
+        .action-btn i { font-size: 20px; }
+        .action-btn:hover { color: var(--primary-blue); }
+
+        /* --- SIDEBAR DROITE --- */
+        .sidebar-right { width: 350px; padding: 20px 24px; position: sticky; top: 0; height: 100vh; }
+        .widget-title { font-size: 20px; font-weight: 800; margin-bottom: 16px; }
+        .related-article { display: flex; gap: 12px; margin-bottom: 20px; cursor: pointer; text-decoration: none; color: inherit; }
+        .related-article:hover .related-title { color: var(--primary-blue); }
+        .related-img { width: 90px; height: 90px; border-radius: 8px; object-fit: cover; }
+        .related-content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .related-rubrique { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+        .related-title { font-size: 14px; font-weight: 700; line-height: 1.3; transition: color 0.2s;}
+
+        @media (max-width: 1200px) { .sidebar-right { display: none; } }
+        @media (max-width: 850px) {
+            .sidebar-left { width: 80px; align-items: center; }
+            .nav-item span, .logo span { display: none; }
+            .subscribe-btn { display: none; }
+            .article-container { width: 100%; }
+        }
+        @media (max-width: 600px) {
+            .article-content { padding: 16px; }
+            .article-title-container h1 { font-size: 28px; }
+            .tiny-mce-content { font-size: 17px; }
+            .author-box { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .tiny-mce-content table { display: block; overflow-x: auto; white-space: nowrap; } /* Tableau scrollable sur mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <img id="lightbox-img" src="" alt="Zoom">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+
+    <div id="progress-bar"></div>
+
+    <div class="container">
+        <!-- Sidebar Gauche -->
+        <aside class="sidebar-left">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-newspaper"></i><span>NewsFeed</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#" class="nav-item"><i class="fa-solid fa-house"></i><span>À la une</span></a>
+                <a href="#" class="nav-item active" style="font-weight: 700;"><i class="fa-solid fa-landmark"></i><span>International</span></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-chart-line"></i><span>Économie</span></a>
+            </nav>
+        </aside>
+
+        <!-- Colonne Centrale : Article -->
+        <main class="article-container">
+            <div class="top-header">
+                <a href="#" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+                <h2>Article</h2>
+            </div>
+
+            <article class="article-content">
+                <span class="rubrique">International • Géopolitique</span>
+                
+                <!-- TITRE (Injecté depuis SQL : champ "titre") -->
+                <div class="article-title-container">
+                    <h1 class="ng-star-inserted"><strong class="ng-star-inserted"><span class="ng-star-inserted">Guerre en Iran : Trump menace de « couper l’eau » dans tout le Moyen-Orient, les géographes perplexes</span></strong></h1>
+                </div>
+
+                <div class="author-box">
+                    <div class="author-info">
+                        <img src="https://ui-avatars.com/api/?name=NF&background=000&color=fff" alt="Desk" class="author-avatar">
+                        <div class="author-details">
+                            <div class="name">Par La Rédaction</div>
+                            <div class="meta">Publié le 30 mars 2026 à 05h00 • Temps de lecture : 3 min</div>
+                        </div>
+                    </div>
+                    <div class="share-actions">
+                        <button class="share-btn"><i class="fa-solid fa-link"></i></button>
+                        <button class="share-btn"><i class="fa-brands fa-x-twitter"></i></button>
+                    </div>
+                </div>
+
+                <!-- CONTENU (Injecté depuis SQL : champ "contenu" généré par TinyMCE) -->
+                <div class="tiny-mce-content">
+                    <p><strong class="ng-star-inserted"><span class="ng-star-inserted"><img src="https://placehold.co/800x400/ff8c00/ffffff?text=Illustration+:+Trump+fermant+le+robinet+du+Moyen-Orient" alt="Donald Trump menaçant de couper l'eau au Moyen-Orient - Article parodique" width="484" height="242"></span></strong></p>
+                    <p class="ng-star-inserted"><strong class="ng-star-inserted"><span class="ng-star-inserted">WASHINGTON D.C.</span></strong><span class="ng-star-inserted"> — Alors que les tensions s'intensifient autour du golfe Persique, Donald Trump a franchi une nouvelle étape dans l'escalade rhétorique ce mardi. Lors d’une conférence de presse improvisée depuis le Bureau Ovale, le président a menacé de « fermer le grand robinet » du Moyen-Orient si l'Iran ne capitulait pas dans les 48 heures.</span></p>
+                    <p class="ng-star-inserted"><span class="ng-star-inserted">« C'est très simple. J'ai parlé avec mes généraux, ce sont des gens fantastiques, très intelligents. Je leur ai dit : "Pourquoi on ne coupe pas juste l'eau ?" », a déclaré M. Trump devant un parterre de journalistes médusés. « Nous allons construire un barrage. Un barrage immense, magnifique. Le plus beau barrage que le monde ait jamais vu. Et croyez-moi, c'est l'Iran qui va le payer. »</span></p>
+                    <p class="ng-star-inserted"><span class="ng-star-inserted">Interrogé par un journaliste de CNN sur la faisabilité technique de priver d’eau une région entière de 7 millions de kilomètres carrés qui dépend de multiples fleuves de sources différentes, d’usines de dessalement et de nappes phréatiques, Donald Trump a balayé la question d'un revers de la main, la qualifiant de « Fake News géographique ».</span></p>
+                    <p class="ng-star-inserted"><span class="ng-star-inserted">« Vous pensez toujours petit. Nous avons les meilleurs plombiers d’Amérique sur le coup, des gars de New York, des vrais durs. Ils vont trouver la vanne principale du Moyen-Orient, et ils vont la tourner. Clac ! Plus d'eau. Plus rien pour leurs chameaux, plus rien pour leurs thés bizarres. »</span></p>
+                    <p class="ng-star-inserted"><span class="ng-star-inserted">Le président a également suggéré qu'il pourrait déployer la « Space Force » pour aspirer les nuages au-dessus de Téhéran à l'aide d'un « aspirateur spatial révolutionnaire » et les relâcher au-dessus des terrains de golf de la Trump Organization à Dubaï, « là où les gens savent faire des affaires ».</span></p>
+                    <p class="ng-star-inserted"><span class="ng-star-inserted"><strong class="ng-star-inserted">DOCUMENT FUITÉ : Tableau prévisionnel de l'Opération "Desert Dry"</strong></span></p>
+                    <table style="border-collapse: collapse; width: 100%; height: 239.6px;" border="1"><colgroup><col style="width: 33.2822%;"><col style="width: 33.2822%;"><col style="width: 33.2822%;"></colgroup>
+                    <tbody>
+                    <tr style="height: 58.6px;">
+                    <td><span class="ng-star-inserted">Zone / Sujet impacté</span></td>
+                    <td><span class="ng-star-inserted">Conséquence estimée par le Pentagone</span></td>
+                    <td><span class="ng-star-inserted">Solution de rechange proposée par D. Trump</span></td>
+                    </tr>
+                    <tr style="height: 36.2px;">
+                    <td><strong class="ng-star-inserted"><span class="ng-star-inserted">Oasis et fleuves iraniens</span></strong></td>
+                    <td><span class="ng-star-inserted">Assèchement total en 48 heures.</span></td>
+                    <td><span class="ng-star-inserted">« Qu'ils boivent du Diet Coke. C'est rafraîchissant et c'est bon pour la ligne. »</span></td>
+                    </tr>
+                    <tr style="height: 36.2px;">
+                    <td><strong class="ng-star-inserted"><span class="ng-star-inserted">Golfe Persique</span></strong></td>
+                    <td><span class="ng-star-inserted">Disparition de la mer, flottes militaires échouées.</span></td>
+                    <td><span class="router-outlet-wrapper ng-tns-c1959715094-0"><span class="ng-star-inserted">Construction d'un immense parking géant et du </span><span class="ng-star-inserted" style="font-style: italic;"><span class="ng-star-inserted">Trump Sand Casino &amp; Resort</span></span><span class="ng-star-inserted">.</span></span></td>
+                    </tr>
+                    <tr style="height: 36.2px;">
+                    <td><strong class="ng-star-inserted"><span class="ng-star-inserted">Chameaux et dromadaires</span></strong></td>
+                    <td><span class="ng-star-inserted">Soif extrême, chômage technique des caravanes.</span></td>
+                    <td><span class="ng-star-inserted">Remplacement obligatoire par des pick-up Ford F-150 (fabriqués aux États-Unis).</span></td>
+                    </tr>
+                    <tr style="height: 36.2px;">
+                    <td><strong class="ng-star-inserted"><span class="ng-star-inserted">Pays alliés (Dubaï, Riyad)</span></strong></td>
+                    <td><span class="ng-star-inserted">Dommages collatéraux, pénurie d'eau locale.</span></td>
+                    <td><span class="router-outlet-wrapper ng-tns-c1959715094-0"><span class="ng-star-inserted">Livraison par drones de bouteilles </span><span class="ng-star-inserted" style="font-style: italic;"><span class="ng-star-inserted">Trump Ice Water</span></span><span class="ng-star-inserted"> au tarif amical de 45$ l'unité.</span></span></td>
+                    </tr>
+                    <tr style="height: 36.2px;">
+                    <td><strong class="ng-star-inserted"><span class="ng-star-inserted">Niveau des océans du globe</span></strong></td>
+                    <td><span class="ng-star-inserted">Baisse mondiale du niveau marin de 5 mètres.</span></td>
+                    <td><span class="ng-star-inserted">Résolution instantanée du réchauffement climatique. Mar-a-Lago est sauvé des inondations.</span></td>
+                    </tr>
+                    </tbody>
+                    </table>
+                    <p class="ng-star-inserted"><strong class="ng-star-inserted"><span class="ng-star-inserted">Une communauté internationale consternée (et confuse)</span></strong></p>
+                    <p class="ng-star-inserted"><span class="ng-star-inserted">La déclaration a provoqué une onde de choc, suivie d'une profonde confusion, dans les capitales mondiales. L'ONU a convoqué une réunion d'urgence de son Conseil de Sécurité pour débattre d'une résolution interdisant « la fermeture des vannes continentales imaginaires ».</span></p>
+                    <p class="ng-star-inserted"><span class="ng-star-inserted">De son côté, le ministre iranien des Affaires étrangères a réagi sur le réseau X (ex-Twitter) : « Nous condamnons fermement cette menace impérialiste, bien que nous n'ayons absolument aucune idée de comment ils comptent s'y prendre techniquement. »</span></p>
+                    <p class="ng-star-inserted"><span class="ng-star-inserted">En France, le président a appelé à la « désescalade hydrographique », tandis qu'un collectif d'hydrologues a publié une tribune dans le magazine </span><span class="ng-star-inserted" style="font-style: italic;"><span class="ng-star-inserted">Science</span></span><span class="ng-star-inserted"> rappelant qu'on ne peut pas « débrancher la mer Caspienne avec une clé à molette géante ».</span></p>
+                    <p class="ng-star-inserted"><span class="ng-star-inserted">Aux États-Unis, la stratégie semble pourtant porter ses fruits sur le plan politique. Un sondage express réalisé par Fox News révèle que 62 % des électeurs républicains se disent favorables à l’idée de « trouver la grosse poignée rouge sous l'Irak et de la tourner à fond vers la droite ».</span></p>
+                </div>
+
+                <div class="article-tags">
+                    <a href="#" class="tag">#Trump</a>
+                    <a href="#" class="tag">#Iran</a>
+                    <a href="#" class="tag">#Parodie</a>
+                </div>
+
+                <div class="bottom-actions">
+                    <button class="action-btn"><i class="fa-regular fa-comment"></i> 412</button>
+                    <button class="action-btn" onclick="toggleLike(this)"><i class="fa-regular fa-heart"></i> 5.2k</button>
+                </div>
+            </article>
+        </main>
+
+        <!-- Sidebar Droite -->
+        <aside class="sidebar-right">
+            <h3 class="widget-title">Dernière minute</h3>
+            <a href="#" class="related-article">
+                <img src="https://placehold.co/100x100/1d9bf0/ffffff?text=Breaking" alt="News" class="related-img">
+                <div class="related-content">
+                    <span class="related-rubrique">International</span>
+                    <h4 class="related-title">La Corée du Nord promet d'envoyer un dragon sur la lune d'ici 2028</h4>
+                </div>
+            </a>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        });
+
+        // Bouton Like
+        function toggleLike(button) {
+            const icon = button.querySelector('i');
+            if (icon.classList.contains('fa-regular')) {
+                icon.className = 'fa-solid fa-heart';
+                button.style.color = '#f91880';
+            } else {
+                icon.className = 'fa-regular fa-heart';
+                button.style.color = 'var(--text-muted)';
+            }
+        }
+
+        // --- AUTOMATISATION LIGHTBOX POUR TINYMCE ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+
+        // On cible toutes les images qui se trouvent dans le contenu généré par TinyMCE
+        document.querySelectorAll('.tiny-mce-content img').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightboxCaption.innerText = img.alt || "Image de l'article";
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        lightbox.addEventListener('click', function(e) {
+            if (e.target !== lightboxImg) closeLightbox();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape" && lightbox.classList.contains('active')) closeLightbox();
+        });
+    </script>
+</body>
+</html>
