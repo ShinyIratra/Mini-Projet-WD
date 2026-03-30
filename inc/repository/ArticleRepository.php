@@ -21,13 +21,13 @@ class ArticleRepository
     public function getTitreArticles(): array
     {
         $sql = "
-            SELECT 
-                Id_Article, 
-                titre, 
-                date_publication, 
-                Id_Categorie,
-                LEFT(REGEXP_REPLACE(contenu, '<[^>]*>', '', 'g'), 200) || '...' AS contenu
-            FROM Article
+            SELECT
+                id_article,
+                titre,
+                date_publication,
+                id_categorie,
+                SUBSTRING(REGEXP_REPLACE(contenu, '<[^>]*>', '', 'g'), 1, 200) || '...' AS contenu
+            FROM article
             ORDER BY date_publication DESC
         ";
 
