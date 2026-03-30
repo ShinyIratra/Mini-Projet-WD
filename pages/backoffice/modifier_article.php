@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $filepath = $uploadDir . $filename;
 
                     if (move_uploaded_file($_FILES['photos']['tmp_name'][$i], $filepath)) {
-                        $articleService->insertPhoto($id_article, '/uploads/articles/' . $filename, $alt);
+                        $articleService->insertPhoto($id_article, 'articles/' . $filename, $alt);
                     }
                 }
             }
@@ -96,13 +96,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier l'article</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/styleBO.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Modifier l'article</h1>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> Backoffice
+        </div>
+        
+        <div class="nav-title">Menu</div>
+        <a href="articles.php" class="nav-item"><i class="fa-solid fa-list"></i> Liste des articles</a>
+        <a href="ajouter_article.php" class="nav-item"><i class="fa-solid fa-plus"></i> Nouvel article</a>
+        
+        <div style="margin-top: auto;"></div>
+        <a href="logout.php" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+    </aside>
 
-        <form method="POST" enctype="multipart/form-data">
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <header class="top-header">
+            <div class="breadcrumb">
+                Backoffice / <span>Modifier l'article</span>
+            </div>
+            <div class="user-profile">
+                <div style="text-align: right; line-height: 1.2;">
+                    <div style="font-size: 0.9rem; font-weight: 600;"><?= htmlspecialchars($_SESSION['user_name'] ?? '') ?></div>
+                </div>
+            </div>
+        </header>
+
+        <div class="workspace">
+            <div class="container">
+                <div class="page-header" style="margin-bottom: 2rem;">
+                    <div class="page-title">
+                        <h1>Modifier l'article</h1>
+                    </div>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data">
             <div class="form-section">
                 <h2>Informations</h2>
 
@@ -262,5 +295,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         addPhotoField();
     </script>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

@@ -357,16 +357,91 @@
 
         /* --- RESPONSIVE --- */
         @media (max-width: 1200px) {
-            .sidebar-right { display: none; }
+            .sidebar-right { 
+                width: 300px;
+            }
+            .feed, .article-container {
+                flex: 1;
+                width: auto;
+            }
         }
 
-        @media (max-width: 700px) {
-            .sidebar-left { width: 80px; align-items: center; }
-            .nav-item span { display: none; }
-            .logo span { display: none; }
-            .subscribe-btn { display: none; }
-            .feed { width: 100%; border-right: none; }
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar-left {
+                width: 100%;
+                height: auto;
+                position: sticky;
+                top: 0;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(12px);
+                z-index: 100;
+            }
+
+            .logo {
+                padding: 0;
+                margin: 0;
+            }
+            
+            .logo span {
+                display: none; /* Juste l'icône sur mobile */
+            }
+
+            .nav-links {
+                flex-direction: row;
+                gap: 15px;
+            }
+
+            .nav-item {
+                padding: 10px;
+                margin: 0;
+            }
+            
+            .nav-item span {
+                display: none; /* Seulement les icônes en mode mobile/tablette */
+            }
+
+            .subscribe-btn {
+                display: none;
+            }
+
+            .feed, .article-container {
+                width: 100%;
+                border-right: none;
+            }
+
+            .sidebar-right {
+                width: 100%;
+                height: auto;
+                position: static;
+                padding: 20px;
+                border-top: 1px solid var(--border-color);
+            }
         }
+
+        @media (max-width: 600px) {
+            .detail-content { padding: 16px; }
+            .article-title-container h1 { font-size: 28px; }
+            .tiny-mce-content { font-size: 17px; }
+            .author-box { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .tiny-mce-content table { display: block; overflow-x: auto; white-space: nowrap; }
+            
+            /* Ajustements du feed sur mobile très petit */
+            .article { padding: 12px; }
+            .article-image { height: 200px; }
+            .article-meta { flex-wrap: wrap; gap: 4px; }
+            .article-actions { padding-top: 5px; }
+        }
+
 /* --- STYLES RECUPERES DE DETAIL_ARTICLE --- */
 #progress-bar {
             position: fixed; top: 0; left: 0; height: 4px;

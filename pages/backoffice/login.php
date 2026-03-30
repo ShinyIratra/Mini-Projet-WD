@@ -87,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <button type="submit" class="btn-login">Connexion</button>
             </form>
+            <div><a href="../../index.php">Retour au site</a></div>
         </div>
     </div>
 </body>

@@ -42,22 +42,45 @@ unset($article);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des articles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/styleBO.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header-bo">
-            <div>
-                <h1>Articles</h1>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> Backoffice
+        </div>
+        
+        <div class="nav-title">Menu</div>
+        <a href="articles.php" class="nav-item active"><i class="fa-solid fa-list"></i> Liste des articles</a>
+        <a href="ajouter_article.php" class="nav-item"><i class="fa-solid fa-plus"></i> Nouvel article</a>
+        
+        <div style="margin-top: auto;"></div>
+        <a href="logout.php" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <header class="top-header">
+            <div class="breadcrumb">
+                Backoffice / <span>Articles</span>
             </div>
-            <div class="header-right">
-                <div class="user-info">
-                    <span><?= htmlspecialchars($_SESSION['user_name']) ?></span>
+            <div class="user-profile">
+                <div style="text-align: right; line-height: 1.2;">
+                    <div style="font-size: 0.9rem; font-weight: 600;"><?= htmlspecialchars($_SESSION['user_name']) ?></div>
                 </div>
-                <a href="ajouter_article.php" class="btn-add">+ Nouvel article</a>
-                <a href="logout.php" class="btn-logout">Déconnexion</a>
             </div>
         </header>
+
+        <div class="workspace">
+            <div class="container">
+                <div class="page-header">
+                    <div class="page-title">
+                        <h1>Articles</h1>
+                    </div>
+                    <a href="ajouter_article.php" class="btn-create"><i class="fa-solid fa-plus"></i> Nouvel article</a>
+                </div>
 
         <?php if (isset($_GET['success'])): ?>
             <div class="success-message">
@@ -80,6 +103,7 @@ unset($article);
                 <p>Créez un article pour commencer</p>
             </div>
         <?php else: ?>
+            <div class="table-responsive">
             <table>
                 <thead>
                     <tr>
@@ -116,7 +140,10 @@ unset($article);
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            </div>
         <?php endif; ?>
-    </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

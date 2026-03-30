@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desk Éditorial - Backoffice</title>
+    
+    <!-- Polices -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-app: #f8fafc; /* Gris bleuté ultra clair et moderne */
+            --bg-panel: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-light: #e2e8f0;
+            
+            --primary: #0f172a; /* Boutons principaux noirs/bleu nuit */
+            --primary-hover: #334155;
+            --accent: #3b82f6; /* Bleu moderne pour les liens/hover */
+            
+            --font-ui: 'Plus Jakarta Sans', sans-serif;
+            --font-article: 'Lora', serif; /* Police Serif élégante pour les titres */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-ui);
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-panel);
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.75rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item:hover { color: var(--text-main); background-color: #f1f5f9; }
+        
+        .nav-item.active {
+            color: var(--accent);
+            background-color: #eff6ff;
+            font-weight: 600;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header Bar */
+        .top-header {
+            height: 80px;
+            background-color: var(--bg-panel);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5rem;
+        }
+
+        .breadcrumb { font-size: 0.9rem; color: var(--text-muted); }
+        .breadcrumb span { color: var(--text-main); font-weight: 600; }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-profile img {
+            width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+        }
+
+        /* Workspace */
+        .workspace { padding: 2.5rem; overflow-y: auto; flex: 1; }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+        }
+
+        .page-title h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.02em; }
+        .page-title p { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.3rem; }
+
+        .btn-create {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .btn-create:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
+
+        /* Container du CRUD */
+        .crud-container {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+        }
+
+        /* Les Filtres */
+        .filters {
+            display: flex;
+            gap: 15px;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+            background-color: #ffffff;
+        }
+
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            font-family: var(--font-ui);
+            font-size: 0.9rem;
+            color: var(--text-main);
+            outline: none;
+            cursor: pointer;
+            background-color: #f8fafc;
+        }
+
+        .search-box {
+            margin-left: auto;
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            width: 300px;
+            font-family: var(--font-ui);
+            font-size: 0.9rem;
+            outline: none;
+            background-color: #f8fafc;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Le Tableau */
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+
+        th {
+            padding: 1rem 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-light);
+            background-color: #fbfcfd;
+        }
+
+        td {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: top;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f8fafc; }
+
+        /* Contenu Article */
+        .article-cell { max-width: 450px; }
+        
+        .article-category {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .article-title {
+            font-family: var(--font-article);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .article-excerpt {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .meta-text { font-size: 0.9rem; color: var(--text-main); }
+        .meta-text span { display: block; color: var(--text-muted); font-size: 0.8rem; margin-top: 4px; }
+
+        /* Badges de statut pastels modernes */
+        .badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-published { background-color: #dcfce7; color: #166534; }
+        .badge-review { background-color: #e0e7ff; color: #3730a3; }
+        .badge-draft { background-color: #f1f5f9; color: #475569; }
+
+        /* Actions textuelles propres */
+        .actions-cell { display: flex; flex-direction: column; gap: 10px; }
+
+        .action-link {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .action-link:hover { color: var(--text-main); }
+        .action-link.delete:hover { color: #ef4444; }
+
+        /* Pagination Moderne */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 1.5rem;
+            background-color: #ffffff;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .pagination-info { font-size: 0.85rem; color: var(--text-muted); }
+
+        .pagination-nav { display: flex; gap: 8px; }
+
+        .page-btn {
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover { background-color: #f1f5f9; color: var(--text-main); }
+        
+        .page-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> Backoffice
+        </div>
+        
+        <div class="nav-title">Espace de travail</div>
+        <a href="#" class="nav-item"><i class="fa-solid fa-house"></i> Vue d'ensemble</a>
+        <a href="#" class="nav-item active"><i class="fa-solid fa-file-lines"></i> Tous les articles</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-folder-open"></i> Rubriques</a>
+        
+        <div class="nav-title">Équipe</div>
+        <a href="#" class="nav-item"><i class="fa-solid fa-users"></i> Journalistes</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Statistiques</a>
+        
+        <div class="nav-title" style="margin-top: auto;">Personnel</div>
+        <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Paramètres</a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        
+        <!-- HEADER -->
+        <header class="top-header">
+            <div class="breadcrumb">
+                Bureau Éditorial / <span>Articles</span>
+            </div>
+            <div class="user-profile">
+                <div style="text-align: right; line-height: 1.2;">
+                    <div style="font-size: 0.9rem; font-weight: 600;">Claire Valmont</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Rédactrice en Chef</div>
+                </div>
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" alt="Profil">
+            </div>
+        </header>
+
+        <!-- WORKSPACE -->
+        <div class="workspace">
+            
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>Gestion des articles</h1>
+                    <p>Rédigez, modifiez et publiez le contenu de votre journal.</p>
+                </div>
+                <a href="#" class="btn-create"><i class="fa-solid fa-plus"></i> Nouvel Article</a>
+            </div>
+
+            <!-- LE COMPOSANT CRUD -->
+            <div class="crud-container">
+                
+                <!-- Filtres conservés -->
+                <div class="filters">
+                    <select class="filter-select">
+                        <option>Toutes les rubriques</option>
+                        <option>Politique</option>
+                        <option>Économie</option>
+                        <option>Culture</option>
+                    </select>
+
+                    <select class="filter-select">
+                        <option>Tous les statuts</option>
+                        <option>Publié</option>
+                        <option>En relecture</option>
+                        <option>Brouillon</option>
+                    </select>
+
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Rechercher un article...">
+                    </div>
+                </div>
+
+                <!-- Tableau conservant toutes les infos -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Contenu</th>
+                            <th>Auteur & Date</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Article 1 -->
+                        <tr>
+                            <td class="article-cell">
+                                <span class="article-category">International</span>
+                                <div class="article-title">Le sommet sur le climat se termine sur un accord historique pour l'Europe</div>
+                                <div class="article-excerpt">Après de longues négociations, les dirigeants européens ont signé un traité engageant de nouvelles réformes écologiques majeures.</div>
+                            </td>
+                            <td>
+                                <div class="meta-text">Marc Lambert<span>24 Oct 2023, 08:30</span></div>
+                            </td>
+                            <td><span class="badge badge-published">Publié</span></td>
+                            <td>
+                                <div class="actions-cell">
+                                    <a href="#" class="action-link"><i class="fa-solid fa-pen"></i> Modifier</a>
+                                    <a href="#" class="action-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Voir le site</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Article 2 -->
+                        <tr>
+                            <td class="article-cell">
+                                <span class="article-category">Technologie</span>
+                                <div class="article-title">Les nouvelles puces quantiques : une révolution pour l'intelligence artificielle</div>
+                                <div class="article-excerpt">Découvrez comment la dernière génération de processeurs va décupler les capacités de calcul des modèles d'IA.</div>
+                            </td>
+                            <td>
+                                <div class="meta-text">Jean Dupont<span>24 Oct 2023, 11:15</span></div>
+                            </td>
+                            <td><span class="badge badge-review">En relecture</span></td>
+                            <td>
+                                <div class="actions-cell">
+                                    <a href="#" class="action-link"><i class="fa-solid fa-pen"></i> Continuer</a>
+                                    <a href="#" class="action-link" style="color: var(--accent);"><i class="fa-solid fa-check"></i> Valider</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Article 3 -->
+                        <tr>
+                            <td class="article-cell">
+                                <span class="article-category">Culture</span>
+                                <div class="article-title">La rétrospective au Musée d'Art Moderne crée l'événement de la rentrée</div>
+                                <div class="article-excerpt">Une collection inédite d'œuvres impressionnistes jamais dévoilées au public.</div>
+                            </td>
+                            <td>
+                                <div class="meta-text">Sophie Leroy<span>Il y a 2h</span></div>
+                            </td>
+                            <td><span class="badge badge-draft">Brouillon</span></td>
+                            <td>
+                                <div class="actions-cell">
+                                    <a href="#" class="action-link"><i class="fa-solid fa-pen"></i> Éditer</a>
+                                    <a href="#" class="action-link delete"><i class="fa-solid fa-trash"></i> Supprimer</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Pagination conservée et modernisée -->
+                <div class="pagination">
+                    <div class="pagination-info">Affichage de 1 à 3 sur 124 articles</div>
+                    <div class="pagination-nav">
+                        <a href="#" class="page-btn"><i class="fa-solid fa-chevron-left"></i></a>
+                        <a href="#" class="page-btn active">1</a>
+                        <a href="#" class="page-btn">2</a>
+                        <a href="#" class="page-btn">3</a>
+                        <span style="display:flex; align-items:center; color:#94a3b8; margin: 0 4px;">...</span>
+                        <a href="#" class="page-btn">12</a>
+                        <a href="#" class="page-btn"><i class="fa-solid fa-chevron-right"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

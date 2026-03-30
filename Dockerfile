@@ -18,6 +18,9 @@ COPY . /var/www/html/
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
+# Activer l'output buffering pour éviter les erreurs "headers already sent" dues aux BOM locaux récurrents
+RUN echo "output_buffering = On" > /usr/local/etc/php/conf.d/output_buffering.ini
+
 EXPOSE 80
 
 CMD ["apache2-foreground"]
