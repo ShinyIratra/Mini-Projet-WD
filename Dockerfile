@@ -17,6 +17,11 @@ RUN composer install --no-interaction --no-progress --prefer-dist --optimize-aut
 
 COPY . .
 
+# Créer le répertoire uploads avec les bonnes permissions
+RUN mkdir -p /var/www/html/public/uploads/articles \
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 777 /var/www/html/public/uploads
+
 EXPOSE 80
 
 CMD ["apache2-foreground"]

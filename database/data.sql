@@ -1,7 +1,7 @@
 -- Données de test pour script.sql
 -- Ordre d'insertion: Utilisateur -> Categorie -> Article -> Article_photo -> Auteur
 
-INSERT INTO Utilisateur (Id_Utilisateur, nom, prenom, identifiant, password) VALUES
+INSERT INTO Utilisateur (Id_Utilisateur, nom, prenom, identifiant, mdp) VALUES
 (1, 'Rakoto', 'Lina', 'lina.rakoto', 'test123'),
 (2, 'Andriam', 'Tiana', 'tiana.andriam', 'test123'),
 (3, 'Rasoanaivo', 'Mickael', 'mickael.raso', 'test123'),
@@ -22,12 +22,12 @@ INSERT INTO Article (Id_Article, titre, contenu, date_publication, Id_Categorie)
 (5, 'Festival des arts urbains', 'Le festival met en avant de jeunes talents locaux en musique et en danse.', '2026-03-24 11:10:00', 5);
 
 INSERT INTO Article_photo (Id_Article_photo, chemin, alt, Id_Article) VALUES
-(1, '/assets/img/articles/elections-2026.jpg', 'Affiche des elections locales 2026', 1),
-(2, '/assets/img/articles/exportations-agricoles.jpg', 'Produits agricoles en preparation', 2),
-(3, '/assets/img/articles/sante-publique.jpg', 'Equipe medicale en sensibilisation', 3),
-(4, '/assets/img/articles/finale-championnat.jpg', 'Stade avant la finale', 4),
-(5, '/assets/img/articles/festival-arts.jpg', 'Scene du festival des arts urbains', 5),
-(6, '/assets/img/articles/finale-supporters.jpg', 'Supporters celebrant avant le match', 4);
+(1, '/uploads/articles/image-1.jpg', 'Affiche des elections locales 2026', 1),
+(2, '/uploads/articles/image-2.jpg', 'Produits agricoles en preparation', 2),
+(3, '/uploads/articles/image-3.jpg', 'Equipe medicale en sensibilisation', 3),
+(4, '/uploads/articles/image-4.jpg', 'Stade avant la finale', 4),
+(5, '/uploads/articles/image-5.jpg', 'Scene du festival des arts urbains', 5),
+(6, '/uploads/articles/image-6.jpg', 'Supporters celebrant avant le match', 4);
 
 INSERT INTO Auteur (Id_Utilisateur, Id_Article) VALUES
 (1, 1),

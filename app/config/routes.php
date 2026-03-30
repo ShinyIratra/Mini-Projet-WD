@@ -2,7 +2,7 @@
 
 use app\controllers\PersonController;
 use app\controllers\FrontOfficeController;
-
+use app\controllers\BackOfficeController;
 use app\controllers\ApiExampleController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
@@ -34,6 +34,12 @@ $router->group('', function(Router $router) use ($app) {
 	// Back Office
 	$router->group('/backoffice', function() use ($router) {
 		$router->get('/article?id=[0-9]+', [ BackOfficeController::class, 'article_detail' ]);
+		$router->get('/article/new', [ BackOfficeController::class, 'ajouter_article' ]);
+		$router->get('/liste_articles', [ BackOfficeController::class, 'liste_articles' ]);
+		$router->get('/modif_article', [ BackOfficeController::class, 'modif_article' ]);
+		$router->post('/traitement-ajout-article', [ BackOfficeController::class, 'traitement_ajout_article' ]);
+		$router->post('/traitement-modif-article', [ BackOfficeController::class, 'traitement_modif_article' ]);
+		$router->get('/traitement-supprimer-article', [ BackOfficeController::class, 'traitement_supprimer_article' ]);
 	});
 	
 	// Front Office

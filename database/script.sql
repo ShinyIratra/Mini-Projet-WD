@@ -3,7 +3,7 @@ CREATE TABLE Utilisateur(
    nom VARCHAR(100)  NOT NULL,
    prenom VARCHAR(200)  NOT NULL,
    identifiant VARCHAR(100)  NOT NULL,
-   password VARCHAR(50)  NOT NULL,
+   mdp VARCHAR(50)  NOT NULL,
    PRIMARY KEY(Id_Utilisateur),
    UNIQUE(identifiant)
 );

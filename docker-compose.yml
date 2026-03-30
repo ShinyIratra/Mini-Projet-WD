@@ -10,6 +10,8 @@ services:
             - "8080:80"
         depends_on:
             - postgres
+        volumes:
+            - ./public/uploads:/var/www/html/public/uploads
 
     postgres:
         image: postgres:15-alpine
@@ -21,6 +23,8 @@ services:
             - "5433:5432"
         volumes:
             - pgdata:/var/lib/postgresql/data
+            - ./database/script.sql:/docker-entrypoint-initdb.d/01-schema.sql
+            - ./database/data.sql:/docker-entrypoint-initdb.d/02-data.sql
 
 volumes:
     pgdata:
