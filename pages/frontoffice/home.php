@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../inc/connexion.php';
 require_once __DIR__ . '/../../inc/repository/ArticleRepository.php';
 require_once __DIR__ . '/../../inc/services/ArticleService.php';
+require_once __DIR__ . '/../../inc/fonction/Rewriter.php';
 
 use inc\repository\ArticleRepository;
 use inc\services\ArticleService;
@@ -88,7 +89,7 @@ foreach ($articles_base as $art) {
                         $identifiant = $article['auteurs'][0]['identifiant'] ?? 'auteur';
                     }
                 ?>
-                    <a href="../backoffice/detail_article.php?id=<?= htmlspecialchars($idArt) ?>" class="article">
+                    <a href="/article/<?= htmlspecialchars($idArt) ?>-<?= htmlspecialchars(creerSlug($article['titre'])) ?>" class="article">
                         <img src="https://ui-avatars.com/api/?name=<?= urlencode($initials) ?>&background=random&color=fff" alt="Avatar" class="article-avatar">
                         <div class="article-content">
                             <div class="article-meta">
