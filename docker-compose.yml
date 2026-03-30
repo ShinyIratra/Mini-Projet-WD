@@ -1,17 +1,15 @@
 services:
-    flight:
+    php_app:
         build:
             context: .
             dockerfile: Dockerfile
         working_dir: /var/www/html
-        environment:
-            docker: "true"
         ports:
             - "8080:80"
         depends_on:
             - postgres
         volumes:
-            - ./public/uploads:/var/www/html/public/uploads
+            - ./:/var/www/html/ # synchroniser les fichiers en temps réel (Hot Reload)
 
     postgres:
         image: postgres:15-alpine

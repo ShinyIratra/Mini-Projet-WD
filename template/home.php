@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NewsFeed - L'actualité en temps réel</title>
     <!-- Polices et Icônes -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">                                         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">                                                        
     <style>
         :root {
             --bg-color: #ffffff;
@@ -177,6 +175,8 @@
             transition: background 0.2s;
             display: flex;
             gap: 12px;
+            text-decoration: none;
+            color: inherit;
         }
 
         .article:hover {
@@ -272,14 +272,11 @@
         }
 
         .action-btn:hover.comment { color: var(--primary-blue); }
-        .action-btn:hover.comment .action-icon-wrapper { background-color: var(--icon-hover-blue); }
-        
+        .action-btn:hover.comment .action-icon-wrapper { background-color: var(--icon-hover-blue); }                                                                    
         .action-btn:hover.retweet { color: #00ba7c; }
-        .action-btn:hover.retweet .action-icon-wrapper { background-color: rgba(0, 186, 124, 0.1); }
-        
+        .action-btn:hover.retweet .action-icon-wrapper { background-color: rgba(0, 186, 124, 0.1); }                                                                    
         .action-btn:hover.like { color: #f91880; }
-        .action-btn:hover.like .action-icon-wrapper { background-color: var(--icon-hover-red); }
-
+        .action-btn:hover.like .action-icon-wrapper { background-color: var(--icon-hover-red); }                                                                
         .liked i { color: #f91880; font-weight: 900; }
         .bookmarked i { color: var(--primary-blue); font-weight: 900; }
 
@@ -396,9 +393,10 @@
                     <i class="fa-solid fa-microchip"></i>
                     <span>Tech & Sciences</span>
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-regular fa-bookmark"></i>
-                    <span>Sauvegardes</span>
+                <!-- Lien pointant vers le Backoffice -->
+                <a href="/pages/backoffice/articles.php" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Administration</span>
                 </a>
             </nav>
 
@@ -414,108 +412,58 @@
                 </div>
             </div>
 
-            <!-- Article 1 -->
-            <article class="article">
-                <img src="https://ui-avatars.com/api/?name=LM&background=000&color=fff" alt="Logo" class="article-avatar">
-                <div class="article-content">
-                    <div class="article-meta">
-                        <span class="author-name">Le Matin Politique</span>
-                        <i class="fa-solid fa-circle-check" style="color: var(--primary-blue); font-size: 14px;"></i>
-                        <span class="author-handle">@lematin_pol</span>
-                        <span class="post-time">· 2 h</span>
-                    </div>
-                    <div class="rubrique-tag">Gouvernement</div>
-                    <h2 class="article-title">Réforme fiscale : Les 3 mesures qui vont impacter le portefeuille des ménages</h2>
-                    <p class="article-snippet">Le ministre de l'Économie a dévoilé ce matin les grandes lignes du nouveau projet de loi. Baisse d'impôts ciblée et taxation verte au cœur du dispositif.</p>
-                    <img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Assemblée" class="article-image">
-                    
-                    <div class="article-actions">
-                        <button class="action-btn comment">
-                            <div class="action-icon-wrapper"><i class="fa-regular fa-comment"></i></div>
-                            <span>124</span>
-                        </button>
-                        <button class="action-btn retweet">
-                            <div class="action-icon-wrapper"><i class="fa-solid fa-retweet"></i></div>
-                            <span>45</span>
-                        </button>
-                        <button class="action-btn like" onclick="toggleAction(this, 'liked')">
-                            <div class="action-icon-wrapper"><i class="fa-regular fa-heart"></i></div>
-                            <span class="count">892</span>
-                        </button>
-                        <button class="action-btn like" onclick="toggleAction(this, 'bookmarked')">
-                            <div class="action-icon-wrapper"><i class="fa-regular fa-bookmark"></i></div>
-                        </button>
-                    </div>
-                </div>
-            </article>
+            <!-- Boucle PHP sur les articles dynamiques -->
+            <?php if (!empty($articles)): ?>
+                <?php foreach ($articles as $article): ?>
+                    <a href="detail_article.php?id=<?= htmlspecialchars($article['id_article']) ?>" class="article">
+                        <img src="https://ui-avatars.com/api/?name=<?php echo urlencode(substr(isset($article['auteurs'][0]['nom_auteur']) ? $article['auteurs'][0]['nom_auteur'] : 'A', 0, 2)); ?>&background=random&color=fff" alt="Avatar" class="article-avatar">                                                      
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <span class="author-name">
+                                    <?php 
+                                        if(!empty($article['auteurs'])) {
+                                            $noms = array_map(function($a) { return $a['nom_auteur']; }, $article['auteurs']);
+                                            echo htmlspecialchars(implode(', ', $noms));
+                                        } else {
+                                            echo 'Auteur inconnu';
+                                        }
+                                    ?>
+                                </span>
+                                <i class="fa-solid fa-circle-check" style="color: var(--primary-blue); font-size: 14px;"></i>
+                                <span class="author-handle">@auteur</span>
+                                <span class="post-time">· <?= htmlspecialchars((new DateTime($article['date_publication']))->format('d/m/Y H:i')) ?></span>
+                            </div>
+                            <div class="rubrique-tag"><?= htmlspecialchars($article['nom_categorie'] ?? 'Actualité') ?></div>
+                            <h2 class="article-title"><?= htmlspecialchars($article['titre']) ?></h2>                                                    
+                            <p class="article-snippet"><?= htmlspecialchars($article['contenu']) ?>...</p>
+                            
+                            <?php if (!empty($article['photos'])): ?>
+                                <img src="/uploads/articles/<?= htmlspecialchars($article['photos'][0]['chemin_photo']) ?>" alt="<?= htmlspecialchars($article['photos'][0]['alt_text'] ?? 'Image') ?>" class="article-image">
+                            <?php else: ?>
+                                <!-- Fallback image if no photo attached -->
+                                <img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Default Image" class="article-image">
+                            <?php endif; ?>
 
-            <!-- Article 2 -->
-            <article class="article">
-                <img src="https://ui-avatars.com/api/?name=Tech+Now&background=1d9bf0&color=fff" alt="Logo" class="article-avatar">
-                <div class="article-content">
-                    <div class="article-meta">
-                        <span class="author-name">Tech Actu</span>
-                        <i class="fa-solid fa-circle-check" style="color: var(--primary-blue); font-size: 14px;"></i>
-                        <span class="author-handle">@tech_actu</span>
-                        <span class="post-time">· 4 h</span>
-                    </div>
-                    <div class="rubrique-tag">Intelligence Artificielle</div>
-                    <h2 class="article-title">Une nouvelle IA open-source défie les géants de la Silicon Valley</h2>
-                    <p class="article-snippet">Une start-up européenne vient de publier un modèle linguistique qui égale les performances des leaders du marché, tout en nécessitant 10 fois moins d'énergie.</p>
-                    <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="IA Concept" class="article-image">
-                    
-                    <div class="article-actions">
-                        <button class="action-btn comment">
-                            <div class="action-icon-wrapper"><i class="fa-regular fa-comment"></i></div>
-                            <span>356</span>
-                        </button>
-                        <button class="action-btn retweet">
-                            <div class="action-icon-wrapper"><i class="fa-solid fa-retweet"></i></div>
-                            <span>890</span>
-                        </button>
-                        <button class="action-btn like" onclick="toggleAction(this, 'liked')">
-                            <div class="action-icon-wrapper"><i class="fa-regular fa-heart"></i></div>
-                            <span class="count">4.2k</span>
-                        </button>
-                        <button class="action-btn like" onclick="toggleAction(this, 'bookmarked')">
-                            <div class="action-icon-wrapper"><i class="fa-regular fa-bookmark"></i></div>
-                        </button>
-                    </div>
+                            <div class="article-actions">
+                                <button class="action-btn comment">
+                                    <div class="action-icon-wrapper"><i class="fa-regular fa-comment"></i></div>                                                                                    <span>0</span>
+                                </button>
+                                <button class="action-btn retweet">
+                                    <div class="action-icon-wrapper"><i class="fa-solid fa-retweet"></i></div>                                                                                      <span>0</span>
+                                </button>
+                                <button class="action-btn like" onclick="event.preventDefault(); toggleAction(this, 'liked')">                                                                                              <div class="action-icon-wrapper"><i class="fa-regular fa-heart"></i></div>                                                                                      <span class="count">0</span>
+                                </button>
+                                <button class="action-btn like" onclick="event.preventDefault(); toggleAction(this, 'bookmarked')">                                                                                         <div class="action-icon-wrapper"><i class="fa-regular fa-bookmark"></i></div>                                                                               </button>
+                            </div>
+                        </div>
+                    </a>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div style="padding: 20px; text-align: center; color: var(--text-muted);">
+                    Aucun article disponible pour le moment.
                 </div>
-            </article>
+            <?php endif; ?>
 
-            <!-- Article 3 -->
-            <article class="article">
-                <img src="https://ui-avatars.com/api/?name=Eco&background=00ba7c&color=fff" alt="Logo" class="article-avatar">
-                <div class="article-content">
-                    <div class="article-meta">
-                        <span class="author-name">Le Journal de l'Écologie</span>
-                        <span class="author-handle">@eco_journal</span>
-                        <span class="post-time">· 6 h</span>
-                    </div>
-                    <div class="rubrique-tag">Climat</div>
-                    <h2 class="article-title">Océans : Les températures atteignent des records inquiétants pour le mois de mars</h2>
-                    <p class="article-snippet">Les scientifiques alertent sur une hausse soudaine des températures de surface de l'océan Atlantique, menaçant la biodiversité marine locale.</p>
-                    
-                    <div class="article-actions" style="margin-top: 15px;">
-                        <button class="action-btn comment">
-                            <div class="action-icon-wrapper"><i class="fa-regular fa-comment"></i></div>
-                            <span>89</span>
-                        </button>
-                        <button class="action-btn retweet">
-                            <div class="action-icon-wrapper"><i class="fa-solid fa-retweet"></i></div>
-                            <span>210</span>
-                        </button>
-                        <button class="action-btn like" onclick="toggleAction(this, 'liked')">
-                            <div class="action-icon-wrapper"><i class="fa-regular fa-heart"></i></div>
-                            <span class="count">1.1k</span>
-                        </button>
-                        <button class="action-btn like" onclick="toggleAction(this, 'bookmarked')">
-                            <div class="action-icon-wrapper"><i class="fa-regular fa-bookmark"></i></div>
-                        </button>
-                    </div>
-                </div>
-            </article>
         </main>
 
         <!-- Sidebar Droite -->
@@ -545,31 +493,9 @@
                     <div class="trend-name">CAC 40</div>
                     <div class="trend-stats">Marchés en hausse à l'ouverture</div>
                 </div>
-
-                <div class="trend-item">
-                    <div class="trend-category">
-                        <span>3 · International · Tendance</span>
-                        <i class="fa-solid fa-ellipsis"></i>
-                    </div>
-                    <div class="trend-name">Sommet Européen</div>
-                    <div class="trend-stats">Direct : Les dirigeants réunis à Bruxelles</div>
-                </div>
-                
-                <div class="trend-item">
-                    <div class="trend-category">
-                        <span>4 · Tech · Tendance</span>
-                        <i class="fa-solid fa-ellipsis"></i>
-                    </div>
-                    <div class="trend-name">ChatGPT 5</div>
-                    <div class="trend-stats">Annonce majeure prévue ce soir</div>
-                </div>
             </div>
             
-            <div style="font-size: 13px; color: var(--text-muted); padding: 16px; display: flex; flex-wrap: wrap; gap: 10px;">
-                <a href="#" style="color: inherit; text-decoration: none;">Conditions d'utilisation</a>
-                <a href="#" style="color: inherit; text-decoration: none;">Politique de confidentialité</a>
-                <a href="#" style="color: inherit; text-decoration: none;">Mentions légales</a>
-                <span>© 2024 NewsFeed Corp.</span>
+            <div style="font-size: 13px; color: var(--text-muted); padding: 16px; display: flex; flex-wrap: wrap; gap: 10px;">                                                  <a href="#" style="color: inherit; text-decoration: none;">Conditions d'utilisation</a>                                                                         <a href="#" style="color: inherit; text-decoration: none;">Politique de confidentialité</a>                                                                     <a href="#" style="color: inherit; text-decoration: none;">Mentions légales</a>                                                                                 <span>© 2024 NewsFeed Corp.</span>
             </div>
         </aside>
     </div>
@@ -578,9 +504,7 @@
     <script>
         // Système d'onglets (Pour vous / Abonnements)
         function switchTab(element) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            element.classList.add('active');
-            // Ici, vous pourriez ajouter une requête AJAX pour changer le contenu du flux
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));                                                                               element.classList.add('active');
         }
 
         // Système de J'aime et de Sauvegarde
@@ -595,17 +519,14 @@
                     icon.classList.remove('fa-regular');
                     icon.classList.add('fa-solid');
                     if(countSpan) {
-                        // Incrémente le compteur fictivement
                         let count = parseFloat(countSpan.innerText);
-                        if(Number.isInteger(count)) countSpan.innerText = count + 1;
-                    }
+                        if(Number.isInteger(count)) countSpan.innerText = count + 1;                                                                                                }
                 } else {
                     icon.classList.remove('fa-solid');
                     icon.classList.add('fa-regular');
                     if(countSpan) {
                         let count = parseFloat(countSpan.innerText);
-                        if(Number.isInteger(count)) countSpan.innerText = count - 1;
-                    }
+                        if(Number.isInteger(count)) countSpan.innerText = count - 1;                                                                                                }
                 }
             } else if (actionClass === 'bookmarked') {
                 if (button.classList.contains('bookmarked')) {

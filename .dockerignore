@@ -1,8 +1,0 @@
-.git
-.github
-.cursor
-.gemini
-vendor
-node_modules
-pgdata
-docker-compose.override.yml

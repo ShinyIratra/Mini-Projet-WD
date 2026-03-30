@@ -1,8 +1,8 @@
 <?php
 
-namespace app\services;
+namespace inc\services;
 
-use app\repositories\ArticleRepository;
+use inc\repository\ArticleRepository;
 use RuntimeException;
 
 class ArticleService

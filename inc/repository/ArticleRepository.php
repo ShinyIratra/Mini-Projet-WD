@@ -1,14 +1,14 @@
 <?php
 
-namespace app\repositories;
+namespace inc\repository;
 
-use flight\database\PdoWrapper;
+use PDO;
 
 class ArticleRepository
 {
-    protected PdoWrapper $db;
+    protected PDO $db;
 
-    public function __construct(PdoWrapper $db)
+    public function __construct(PDO $db)
     {
         $this->db = $db;
     }

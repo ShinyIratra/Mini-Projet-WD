@@ -1,26 +1,22 @@
-FROM php:8-apache
+FROM php:8.2-apache
 
-WORKDIR /var/www/html
-
+# Installer les dépendances pour PostgreSQL
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libpq-dev git unzip \
+    && apt-get install -y --no-install-recommends libpq-dev \
     && docker-php-ext-install pdo pdo_pgsql \
     && a2enmod rewrite \
-    && sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf \
     && sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+# Définir le répertoire de travail
+WORKDIR /var/www/html
 
-COPY composer.json composer.lock ./
-RUN composer install --no-interaction --no-progress --prefer-dist --optimize-autoloader
+# Copier les fichiers du projet (optionnel si monté via docker-compose, mais bonne pratique)
+COPY . /var/www/html/
 
-COPY . .
-
-# Créer le répertoire uploads avec les bonnes permissions
-RUN mkdir -p /var/www/html/public/uploads/articles \
-    && chown -R www-data:www-data /var/www/html \
-    && chmod -R 777 /var/www/html/public/uploads
+# Ajuster les permissions pour s'assurer que PHP peut écrire si nécessaire
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
 
 EXPOSE 80
 
