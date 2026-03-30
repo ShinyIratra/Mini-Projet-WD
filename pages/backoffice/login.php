@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         type="text"
                         id="identifiant"
                         name="identifiant"
-                        value="tiana.andriam"
+                        value="boss.admin"
                         autofocus
                         required
                     >
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         type="password"
                         id="mdp"
                         name="mdp"
-                        value="test123"
+                        value="admin"
                         required
                     >
                 </div>

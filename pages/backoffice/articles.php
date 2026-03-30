@@ -87,7 +87,7 @@ unset($article);
                         <tr>
                             <td>
                                 <?php if (!empty($article['photos'])): ?>
-                                    <img src="/uploads/<?= htmlspecialchars($article['photos'][0]['chemin']); ?>" alt="Photo" class="article-photo">
+                                    <img src="/uploads/<?= htmlspecialchars($article['photos'][0]['chemin']); ?>" alt="<?= htmlspecialchars($article['photos'][0]['alt']); ?>" class="article-photo">
                                 <?php else: ?>
                                     <span style="color: #999;">Pas de photo</span>
                                 <?php endif; ?>
