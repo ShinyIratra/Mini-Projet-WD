@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Si le fichier ou le dossier demandé n'existe pas physiquement
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# logique : /article/123-peu-importe = pages/backoffice/detail_article.php?id=123
+RewriteRule ^article/([0-9]+)(?:-.*)?$ pages/backoffice/detail_article.php?id=$1 [L,QSA]
