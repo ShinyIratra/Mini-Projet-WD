@@ -1,0 +1,8 @@
+﻿User-agent: *
+Disallow: /pages/backoffice/
+Disallow: /database/
+Disallow: /inc/
+Disallow: /tinymce/
+Disallow: /todo/
+
+Sitemap: https://localhost/sitemap.xml
