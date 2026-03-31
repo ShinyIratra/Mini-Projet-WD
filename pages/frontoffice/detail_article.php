@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../inc/connexion.php';
 require_once __DIR__ . '/../../inc/repository/ArticleRepository.php';
 require_once __DIR__ . '/../../inc/services/ArticleService.php';
+require_once __DIR__ . '/../../inc/fonction/Rewriter.php';
 
 use inc\repository\ArticleRepository;
 use inc\services\ArticleService;
@@ -70,7 +71,7 @@ $liste_auteurs = !empty($article['auteur']) ? trim($article['auteur']) : 'La Ré
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?= htmlspecialchars(mb_substr(strip_tags($article['contenu']), 0, 150)) ?>...">
-    <title><?= htmlspecialchars(strip_tags($article['titre'])) ?> - L'Echo</title>
+    <title><?= htmlspecialchars(html_entity_decode(strip_tags($article['titre']), ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?> - L'Echo</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -103,7 +104,7 @@ $liste_auteurs = !empty($article['auteur']) ? trim($article['auteur']) : 'La Ré
                 
                 <!-- TITRE (Injecté depuis SQL : champ "titre") -->
                 <div class="article-title-container">
-                    <h1><?= htmlspecialchars(strip_tags($article['titre'])) ?></h1>
+                    <h1><?= htmlspecialchars(html_entity_decode(strip_tags($article['titre']), ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?></h1>
                 </div>
 
                 <div class="author-box">
@@ -144,13 +145,14 @@ $liste_auteurs = !empty($article['auteur']) ? trim($article['auteur']) : 'La Ré
                 }
                 $lat_id = $lat_art['id_article'] ?? $lat_art['Id_Article'] ?? '#';
             ?>
-            <a href="detail_article.php?id=<?= $lat_id ?>" class="related-article">
+            
+            <a href="/article/<?= htmlspecialchars($lat_id) ?>-<?= htmlspecialchars(creerSlug($lat_art['titre'])) ?>" class="related-article">
                 <?php if (!empty($lat_art['photos'])): ?>
                     <img src="/uploads/<?= htmlspecialchars($lat_art['photos'][0]['chemin']) ?>" alt="<?= htmlspecialchars($lat_art['photos'][0]['alt'] ?? 'Image related') ?>" class="related-img" loading="lazy" width="90" height="90">
                 <?php endif; ?>
                 <div class="related-content">
                     <span class="related-rubrique"><?= htmlspecialchars($cat_name_lat) ?></span>
-                    <h4 class="related-title"><?= htmlspecialchars(strip_tags($lat_art['titre'])) ?></h4>
+                    <h4 class="related-title"><?= htmlspecialchars(html_entity_decode(strip_tags($lat_art['titre']), ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?></h4>
                 </div>
             </a>
             <?php endforeach; ?>
