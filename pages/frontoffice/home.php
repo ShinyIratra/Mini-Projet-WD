@@ -78,11 +78,14 @@ else
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NewsFeed - Retrouvez l'actualité en temps réel, les dernières informations, et les articles à la une.">
     <title>NewsFeed - L'actualité en temps réel</title>
-    <!-- Polices et Icônes -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="../../assets/css/style1.css">
+    <!-- Pré-chargement des images principales si possible ou images CDN -->
 </head>
 <body>
 
@@ -111,7 +114,7 @@ else
                     }
                 ?>
                     <a href="/article/<?= htmlspecialchars($idArt) ?>-<?= htmlspecialchars(creerSlug($article['titre'])) ?>" class="article">
-                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($initials) ?>&background=random&color=fff" alt="Avatar" class="article-avatar">
+                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($initials) ?>&background=random&color=fff" alt="Avatar de l'auteur" class="article-avatar" loading="lazy" width="48" height="48">
                         <div class="article-content">
                             <div class="article-meta">
                                 <span class="author-name">
@@ -126,7 +129,7 @@ else
                             <p class="article-snippet"><?= htmlspecialchars(html_entity_decode($article['extrait'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?> <span class="read-more">Voir plus</span></p>
                             
                             <?php if (!empty($article['photos'])): ?>
-                                <img src="/uploads/<?= htmlspecialchars($article['photos'][0]['chemin']) ?>" alt="<?= htmlspecialchars($article['photos'][0]['alt']); ?>" class="article-image">
+                                <img src="/uploads/<?= htmlspecialchars($article['photos'][0]['chemin']) ?>" alt="<?= htmlspecialchars($article['photos'][0]['alt'] ?? 'Image article'); ?>" class="article-image" loading="lazy">
                             <?php else: ?>
                                 <!-- Fallback image if no photo attached -->
                                 <div class="article-image" style="display: flex; align-items: center; justify-content: center; background-color: #f0f0f0; color: #666; font-style: italic;">
@@ -147,9 +150,9 @@ else
         <!-- Sidebar Droite -->
         <aside class="sidebar-right">
             <div class="search-bar">
-                <i class="fa-solid fa-magnifying-glass"></i>
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                 <form method="GET" action="/pages/frontoffice/home.php" style="flex: 1;">
-                    <input type="text" name="search" placeholder="Rechercher dans l'actualité..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                    <input aria-label="Recherche" type="text" name="search" placeholder="Rechercher dans l'actualité..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                 </form>
             </div>
 

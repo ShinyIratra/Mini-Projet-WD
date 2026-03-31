@@ -69,10 +69,10 @@ $liste_auteurs = !empty($article['auteur']) ? trim($article['auteur']) : 'La Ré
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<?= htmlspecialchars(mb_substr(strip_tags($article['contenu']), 0, 150)) ?>...">
     <title><?= htmlspecialchars(strip_tags($article['titre'])) ?> - NewsFeed</title>
     
-    <!-- Polices : Inter pour l'UI, Lora pour la lecture -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="../../assets/css/style1.css">
@@ -94,7 +94,7 @@ $liste_auteurs = !empty($article['auteur']) ? trim($article['auteur']) : 'La Ré
         <!-- Colonne Centrale : Article -->
         <main class="article-container">
             <div class="top-header">
-                <a href="javascript:history.back()" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+                <a href="javascript:history.back()" class="back-btn" aria-label="Retour"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></a>
                 <h2>Article</h2>
             </div>
 
@@ -108,15 +108,15 @@ $liste_auteurs = !empty($article['auteur']) ? trim($article['auteur']) : 'La Ré
 
                 <div class="author-box">
                     <div class="author-info">
-                        <img src="https://ui-avatars.com/api/?name=<?= urlencode(substr($liste_auteurs, 0, 2)) ?>&background=000&color=fff" alt="Desk" class="author-avatar">
+                        <img src="https://ui-avatars.com/api/?name=<?= urlencode(substr($liste_auteurs, 0, 2)) ?>&background=000&color=fff" alt="Avatar de l'auteur" class="author-avatar" loading="lazy" width="48" height="48">
                         <div class="author-details">
                             <div class="name">Par <?= htmlspecialchars($liste_auteurs) ?></div>
                             <div class="meta">Publié le <?= $date_formatee ?></div>
                         </div>
                     </div>
                     <div class="share-actions">
-                        <button class="share-btn"><i class="fa-solid fa-link"></i></button>
-                        <button class="share-btn"><i class="fa-brands fa-x-twitter"></i></button>
+                        <button class="share-btn" aria-label="Copier le lien"><i class="fa-solid fa-link" aria-hidden="true"></i></button>
+                        <button class="share-btn" aria-label="Partager sur X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></button>
                     </div>
                 </div>
 
@@ -146,7 +146,7 @@ $liste_auteurs = !empty($article['auteur']) ? trim($article['auteur']) : 'La Ré
             ?>
             <a href="detail_article.php?id=<?= $lat_id ?>" class="related-article">
                 <?php if (!empty($lat_art['photos'])): ?>
-                    <img src="/uploads/<?= htmlspecialchars($lat_art['photos'][0]['chemin']) ?>" alt="<?= htmlspecialchars($lat_art['photos'][0]['alt']) ?>" class="related-img">
+                    <img src="/uploads/<?= htmlspecialchars($lat_art['photos'][0]['chemin']) ?>" alt="<?= htmlspecialchars($lat_art['photos'][0]['alt'] ?? 'Image related') ?>" class="related-img" loading="lazy" width="90" height="90">
                 <?php endif; ?>
                 <div class="related-content">
                     <span class="related-rubrique"><?= htmlspecialchars($cat_name_lat) ?></span>
