@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="login-page">
     <div class="login-container">
         <div class="login-box">
-            <h1>Backoffice</h1>
+            <h1>L'Echo</h1>
             <p class="login-subtitle">Connexion administrative</p>
 
             <?php if ($error): ?>
@@ -87,7 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <button type="submit" class="btn-login">Connexion</button>
             </form>
-            <div><a href="../../index.php">Retour au site</a></div>
+            
+            <div class="back-to-site">
+                <a href="/pages/frontoffice/home.php"><- Retour au site</a>
+            </div>
         </div>
     </div>
 </body>

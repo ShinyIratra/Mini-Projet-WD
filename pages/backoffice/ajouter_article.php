@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 // Vérifier si l'utilisateur est connecté
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="brand">
-            <i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> Backoffice
+            <i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> L'Echo
         </div>
         
         <div class="nav-title">Menu</div>

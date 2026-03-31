@@ -144,6 +144,23 @@ body.login-page {
     box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.2);
 }
 
+.back-to-site {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.back-to-site a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.back-to-site a:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
 .error-message {
     background-color: #fef2f2;
     color: #ef4444;

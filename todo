@@ -7,7 +7,14 @@
 - 2026/03/30 12:00 (Iratra) : Réinitialisation pour ne plus utiliser Flight mais Vanilla PHP
 - 2026/03/30 14:36 (Iratra) : Détail d'article
 - 2026/03/30 15:25 (Iratra) : Rewriting de détail article
+- 2026/03/30 15:00 (Tafita) : integration TinyMCE dans les formulaire backoffice
+- 2026/03/30 15:15 (Tafita) : upload de photos dans backoffice
 - 2026/03/30 15:42 (Iratra) : Création de sitemap.xml et robots.txt
 - 2026/03/30 16:08 (Iratra) : Faire marcher recherche sur la page d'accueil
 - 2026/03/30 16:10 (Iratra et Tafita) : Fix css BackOffice et FrontOffice
-- 2026/03/30 16:10 (Tafita) : Login BackOffice
+- 2026/03/30 17:00 (Tafita) : Login BackOffice
+- 2026/03/30 21:00 (Tafita) : fix des bugs fonctionnalités et test unitaire 
+- 2026/03/31 01:19 (Tafita) : fix CSS et responsive design de toutes les pages
+- 2026/03/31 01:30 (Tafita) : optimisation cache et gzip dans htaccess
+- 2026/03/31 09:05 (Tafita) : ajout du meta et amelioration des performance lighthouse
+- 2026/03/31 09:40 (Iratra) : redaction doc technique
