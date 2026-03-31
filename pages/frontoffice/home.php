@@ -25,51 +25,38 @@ if ($categories_base) {
 }
 
 $articles = [];
+$filter_search = isset($_GET['search']) ? trim($_GET['search']) : null;
+$filter_cat = isset($_GET['cat']) ? trim($_GET['cat']) : null;
 
-// Récupérer les articles
-if(isset($_GET['search']))
-    {
-        $criteria = trim($_GET['search']);
-        $articles_base = $articleService->searchArticles($criteria);
+// Récupérer les articles selon la recherche s'il y en a une
+if (!empty($filter_search)) {
+    $articles_base = $articleService->searchArticles($filter_search);
+} else {
+    $articles_base = $articleService->getTitreArticles();
+}
 
-        foreach ($articles_base as $art) {
-            $id = $art['id_article'] ?? $art['Id_Article'] ?? null;
-            if ($id) {
-                $full_article = $articleService->getArticleById($id);
-                if ($full_article) {
-                    // Ajouter l'extrait du contenu venant de searchArticles
-                    $full_article['extrait'] = $art['contenu'] ?? '';
-                    
-                    // Catégorie
-                    $cat_id = $full_article['id_categorie'] ?? $full_article['Id_Categorie'] ?? null;
-                    $full_article['rubrique'] = $cat_id && isset($categories[$cat_id]) ? $categories[$cat_id] : 'Actualité';
-                    
-                    $articles[] = $full_article;
-                }
+foreach ($articles_base as $art) {
+    $id = $art['id_article'] ?? $art['Id_Article'] ?? null;
+    if ($id) {
+        $full_article = $articleService->getArticleById($id);
+        if ($full_article) {
+            // Ajouter l'extrait du contenu
+            $full_article['extrait'] = $art['contenu'] ?? '';
+            
+            // Catégorie
+            $cat_id = $full_article['id_categorie'] ?? $full_article['Id_Categorie'] ?? null;
+            $rubrique = $cat_id && isset($categories[$cat_id]) ? $categories[$cat_id] : 'Actualité';
+            $full_article['rubrique'] = $rubrique;
+            
+            // Si une catégorie est filtrée, on l'applique ici :
+            if (!empty($filter_cat) && strtolower($rubrique) !== strtolower($filter_cat)) {
+                continue;
             }
+            
+            $articles[] = $full_article;
         }
     }
-else
-    {
-        $articles_base = $articleService->getTitreArticles();
-
-        foreach ($articles_base as $art) {
-            $id = $art['id_article'] ?? $art['Id_Article'] ?? null;
-            if ($id) {
-                $full_article = $articleService->getArticleById($id);
-                if ($full_article) {
-                    // Ajouter l'extrait du contenu venant de getTitreArticles
-                    $full_article['extrait'] = $art['contenu'] ?? '';
-                    
-                    // Catégorie
-                    $cat_id = $full_article['id_categorie'] ?? $full_article['Id_Categorie'] ?? null;
-                    $full_article['rubrique'] = $cat_id && isset($categories[$cat_id]) ? $categories[$cat_id] : 'Actualité';
-                    
-                    $articles[] = $full_article;
-                }
-            }
-        }
-    }
+}
 
 ?>
 
@@ -152,7 +139,10 @@ else
             <div class="search-bar">
                 <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                 <form method="GET" action="/pages/frontoffice/home.php" style="flex: 1;">
-                    <input aria-label="Recherche" type="text" name="search" placeholder="Rechercher dans l'actualité..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                    <?php if (!empty($filter_cat)): ?>
+                        <input type="hidden" name="cat" value="<?= htmlspecialchars($filter_cat) ?>">
+                    <?php endif; ?>
+                    <input aria-label="Recherche" type="text" name="search" placeholder="Rechercher dans l'actualité..." value="<?= htmlspecialchars($filter_search ?? '') ?>">
                 </form>
             </div>
 
@@ -161,14 +151,20 @@ else
                 
                 <?php if (!empty($categories_base)): ?>
                     <?php foreach ($categories_base as $cat): ?>
-                        <div class="trend-item">
+                        <?php 
+                            $cat_url = '/pages/frontoffice/home.php?cat=' . urlencode($cat['rubrique']);
+                            if (!empty($filter_search)) {
+                                $cat_url .= '&search=' . urlencode($filter_search);
+                            }
+                        ?>
+                        <a href="<?= htmlspecialchars($cat_url) ?>" class="trend-item" style="text-decoration: none; color: inherit; display: block;">
                             <div class="trend-category">
                                 <span>Catégorie</span>
                                 <i class="fa-solid fa-ellipsis"></i>
                             </div>
                             <div class="trend-name"><?= htmlspecialchars($cat['rubrique']) ?></div>
                             <div class="trend-stats">À découvrir</div>
-                        </div>
+                        </a>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <div style="padding: 0 16px 16px; color: var(--text-muted);">Aucune catégorie.</div>
@@ -176,48 +172,5 @@ else
             </div>
         </aside>
     </div>
-
-    <!-- Script JavaScript interactif -->
-    <script>
-        // Système d'onglets (Pour vous / Abonnements)
-        function switchTab(element) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            element.classList.add('active');
-        }
-
-        // Système de J'aime et de Sauvegarde
-        function toggleAction(button, actionClass) {
-            const icon = button.querySelector('i');
-            const countSpan = button.querySelector('.count');
-            
-            button.classList.toggle(actionClass);
-            
-            if (actionClass === 'liked') {
-                if (button.classList.contains('liked')) {
-                    icon.classList.remove('fa-regular');
-                    icon.classList.add('fa-solid');
-                    if(countSpan) {
-                        let count = parseFloat(countSpan.innerText);
-                        if(Number.isInteger(count)) countSpan.innerText = count + 1;
-                    }
-                } else {
-                    icon.classList.remove('fa-solid');
-                    icon.classList.add('fa-regular');
-                    if(countSpan) {
-                        let count = parseFloat(countSpan.innerText);
-                        if(Number.isInteger(count)) countSpan.innerText = count - 1;
-                    }
-                }
-            } else if (actionClass === 'bookmarked') {
-                if (button.classList.contains('bookmarked')) {
-                    icon.classList.remove('fa-regular');
-                    icon.classList.add('fa-solid');
-                } else {
-                    icon.classList.remove('fa-solid');
-                    icon.classList.add('fa-regular');
-                }
-            }
-        }
-    </script>
 </body>
 </html>
