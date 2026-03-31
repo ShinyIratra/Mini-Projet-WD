@@ -70,12 +70,12 @@ $liste_auteurs = !empty($article['auteur']) ? trim($article['auteur']) : 'La Ré
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?= htmlspecialchars(mb_substr(strip_tags($article['contenu']), 0, 150)) ?>...">
-    <title><?= htmlspecialchars(strip_tags($article['titre'])) ?> - NewsFeed</title>
+    <title><?= htmlspecialchars(strip_tags($article['titre'])) ?> - L'Echo</title>
     
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="../../assets/css/style1.css">
+    <link rel="stylesheet" href="../../assets/css/style1.min.css">
 </head>
 <body>
 

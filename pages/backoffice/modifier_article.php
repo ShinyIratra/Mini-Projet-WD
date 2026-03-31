@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier l'article</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../../assets/css/styleBO.css">
+    <link rel="stylesheet" href="../../assets/css/styleBO.min.css">
 </head>
 <body>
     <!-- SIDEBAR -->
@@ -178,12 +178,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="existing-photos">
                         <h3>Photos existantes</h3>
                         <?php foreach ($article['photos'] as $photo): ?>
-                            <div class="photo-item">
-                                <div>
-                                    <strong>Alt:</strong> <?= htmlspecialchars($photo['alt']); ?>
+                            <div class="photo-item" style="display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border-light, #e2e8f0); padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <img src="/uploads/<?= htmlspecialchars($photo['chemin']); ?>" alt="<?= htmlspecialchars($photo['alt']); ?>" style="width: 80px; height: 80px; object-fit: cover; border-radius: 6px;">
+                                    <span><strong>Alt:</strong> <?= htmlspecialchars($photo['alt']); ?></span>
                                 </div>
                                 <div class="photo-item-checkbox">
-                                    <input type="checkbox" name="delete_photos[]" value="<?= $photo['id_article_photo']; ?>">
+                                    <label style="color: #ef4444; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: 500;">
+                                        <input type="checkbox" name="delete_photos[]" value="<?= $photo['id_article_photo']; ?>">
+                                        Supprimer
+                                    </label>
                                 </div>
                             </div>
                         <?php endforeach; ?>

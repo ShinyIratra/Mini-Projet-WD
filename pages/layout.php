@@ -2,7 +2,7 @@
 <aside class="sidebar-left">
     <a href="/pages/frontoffice/home.php" class="logo" aria-label="Accueil NewsFeed">
         <i class="fa-solid fa-newspaper" aria-hidden="true"></i>
-        <span>NewsFeed</span>
+        <span>L'Echo</span>
     </a>
     
     <nav class="nav-links">

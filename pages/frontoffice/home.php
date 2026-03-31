@@ -84,7 +84,7 @@ else
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="../../assets/css/style1.css">
+    <link rel="stylesheet" href="../../assets/css/style1.min.css">
     <!-- Pré-chargement des images principales si possible ou images CDN -->
 </head>
 <body>
@@ -173,13 +173,6 @@ else
                 <?php else: ?>
                     <div style="padding: 0 16px 16px; color: var(--text-muted);">Aucune catégorie.</div>
                 <?php endif; ?>
-            </div>
-            
-            <div style="font-size: 13px; color: var(--text-muted); padding: 16px; display: flex; flex-wrap: wrap; gap: 10px;">
-                <a href="#" style="color: inherit; text-decoration: none;">Conditions d'utilisation</a>
-                <a href="#" style="color: inherit; text-decoration: none;">Politique de confidentialité</a>
-                <a href="#" style="color: inherit; text-decoration: none;">Mentions légales</a>
-                <span>© 2024 NewsFeed Corp.</span>
             </div>
         </aside>
     </div>
